@@ -26,6 +26,10 @@ char* processFile(const char* filename) {
         // Process the current character
         // For now, let's just print each character
         printf("%c", (char)currentChar);
+
+        // TODO: Store the character in the result buffer or perform other processing
+        // Ensure you check buffer size and reallocate if necessary
+        // resultBuffer[bufferIndex++] = (char)currentChar;
     }
 
     // Close the file

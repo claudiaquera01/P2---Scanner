@@ -6,4 +6,4 @@ const char* ERROR_MESSAGE_NONALPHABETCHAR = "This character does not belong to t
 
 //Error messages at MAIN
 const char* ERROR_MESSAGE_CANT_READ_FILE = "Cannot read file";
-const char* ERROR_MESSAGE_MISSING_FILENAME = "Missing filename in command-line arguments";
+const char* ERROR_MESSAGE_MISSING_FILENAME = "Filename is missing in command-line arguments";

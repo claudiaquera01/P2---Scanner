@@ -1,24 +1,27 @@
 #include "main.h"
 #include "errors.h"
 
-int main(int argc, char *argv[]) {
-    // Check if a file name is provided as a command-line argument
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
-        fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MISSING_FILENAME);
-        return MAIN_ERROR_MISSING_FILENAME;
+// Function to process a C file character by character
+char* processFile(const char* filename) {
+    // Open the file
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        fprintf(stderr, "Error opening file: %s\n", filename);
+        return NULL;
     }
 
-    // Open the file
-    FILE *file = fopen(argv[1], "r");
-    if (file == NULL) {
-        fprintf(stderr, "Error opening file: %s\n", argv[1]);
-        fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_CANT_READ_FILE);
-        return MAIN_ERROR_CANT_READ_FILE;
+    // Allocate memory for the result buffer
+    char* resultBuffer = (char*)malloc(sizeof(char) * BUFFER_SIZE);
+    if (resultBuffer == NULL) {
+        fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
+        fclose(file);  // Close the file before returning
+        return NULL;
     }
+
+    int currentChar;
+    int bufferIndex = 0;
 
     // Read the file character by character
-    int currentChar;
     while ((currentChar = getc(file)) != EOF) {
         // Process the current character
         // For now, let's just print each character
@@ -27,6 +30,31 @@ int main(int argc, char *argv[]) {
 
     // Close the file
     fclose(file);
+
+    // TODO: Return the result buffer or perform further processing
+    return resultBuffer;
+}
+
+int main(int argc, char *argv[]) {
+    // Check if a file name is provided as a command-line argument
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MISSING_FILENAME);
+        return MAIN_ERROR_MISSING_FILENAME;
+    }
+
+    // Call the processFile function with the filename
+    char* resultBuffer = processFile(argv[1]);
+
+    if (resultBuffer == NULL) {
+        fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_FILE_PROCESSING);
+        return MAIN_ERROR_FILE_PROCESSING;
+    }
+
+    // TODO: Handle the resultBuffer or perform further processing
+
+    // Free the result buffer when done
+    free(resultBuffer);
 
     return SCANNER_SUCCESS;
 }

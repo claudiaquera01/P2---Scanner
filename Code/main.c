@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     // Read the file character by character
     int currentChar;
     while ((currentChar = getc(file)) != EOF) {
-        // Process the current character (you'll add your logic here)
+        // Process the current character
         // For now, let's just print each character
         printf("%c", (char)currentChar);
     }

@@ -52,6 +52,8 @@ int main(int argc, char *argv[]) {
     }
 
     // TODO: Handle the resultBuffer or perform further processing
+    // For now, we'll just print the resultBuffer
+    printf("\nResult buffer: %s", resultBuffer);
 
     // Free the result buffer when done
     free(resultBuffer);

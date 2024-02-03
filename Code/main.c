@@ -1,6 +1,5 @@
 #include "main.h"
-#include "errors.h"
-#include "scanner.h"
+
 
 // Function to process a C file character by character
 char* processFile(const char* filename) {

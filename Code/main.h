@@ -1,7 +1,8 @@
 #ifndef MAIN_HEADER 
 #define MAIN_HEADER
 
-
+#include "errors.h"
+#include "scanner.h"
 
 
 

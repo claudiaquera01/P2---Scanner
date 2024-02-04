@@ -94,12 +94,30 @@ typedef struct struct_dfa {
 //functions
 
 /*
-initializes the DFA with the given data. DFA does NOT take ownership of alphabet but DOES take
-ownership of final_states. read the definition of DFA for more info
+initializes the DFA with the given data. DFA does NOT take ownership of alphabet 
+but DOES takeownership of final_states. read the definition of DFA for more info. 
+Also note that the alphabet must be constant during the live of the dfa and must be SORTED
+
+Note: the transition table is initialized to values of 0 (go to rejecting state), 
+the correct values must be set later. see set_dfa_transition_table_value()
 */
 void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int* _final_states, int _len_final_states); 
 
+/*
+moves the dfa to the next state (according to dfa.current_state, dfa.transition_table 
+and symbol)
+*/
+void move_dfa(DFA* dfa, char symbol); 
 
+/*
+    checks if dfa is in end state. returns true if dfa accepts or false otherwise
+*/
+bool finalize_dfa(DFA* dfa); 
+
+/*
+    resets the dfa back to the initial state and back to being alive
+*/
+void reset_dfa(DFA* dfa); 
 
 /*
 uses binary search to determinate the index of the element element in list. 
@@ -112,17 +130,30 @@ this will be used in the dfa for moving the state with the transition table
 */
 int get_symbol_index_BS(char* list, int len, char element); 
 
-
-
 /*
 returns the new state a dfa would go from curr_state when reciving new_char. 
 curr_state must be a valid state and new_char must be in the alphabet of the dfa. 
 the dfa must be valid and initialized. 
 
-returns the new state or -1 on error
+returns the new state or negative value on error: 
+returns 0 on succses, or a negative value on error: 
+    -1: invalid state: state is neagtive or greater than dfa.num_states
+    -2: invalid symbol: char is not in the alphabet
 */
-int get_transition_table_element(DFA* dfa, int curr_state, char new_char); 
+int get_dfa_transition_table_value(DFA* dfa, int curr_state, char symbol); 
 
+/*
+modifies a value in the transition table of a dfa. the dfa must be initialized and valid. 
+In short, if a dfa is in the state state and recives symbol, this function will set the 
+transition value so it goes to new_state. 
+
+returns 0 on succses, or a negative value on error: 
+    -1: invalid state: state is neagtive or greater than dfa.num_states
+    -2: invalid symbol: char is not in the alphabet
+    -3: invalid state: new_state is neagtive or greater than dfa.num_states
+
+*/
+int set_dfa_transition_table_value(DFA* dfa, int state, char symbol, int new_state); 
 
 /*
 frees all the contents inside the dfa. does NOT free alphabet nor the dfa itself .

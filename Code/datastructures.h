@@ -51,8 +51,8 @@ is constant.
 len_alphabet is the length of the alphabet. 
 
 Each state is represented as an integer. The state 0 is reserved for the rejecting state. 
-Also note that the state 1 us the deafult state for the initial state (q0), 
-although it can be changed. 
+Also note that the state 1 is the deafult state for the initial state (q0), 
+although it can be changed. (but better don't)
 
 num_states is the number of valid states and represents the states (q). 
 It counts the number of valid states NOT includeing the rejecting state. 
@@ -67,7 +67,8 @@ current_state is the current state of the automata.
 
 transition_table (delta) is a matrix that holds all necessary information to 
 traverse the DFA. It can be accessed as transition_table[state * (len_alphabet) + symbol_index]
-DFA holds ownership of transition_table
+However some usefull functions for doing that are provided, get_dfa_transition_table_value() 
+and set_dfa_transition_table_value(). DFA holds ownership of transition_table
 
 alive is true if the automata has NOT reached the rejectiong state (0). 
 

@@ -86,10 +86,10 @@ int main(int argc, char *argv[]) {
     free(resultBuffer);
 
     // TESTING DFA TABLES
-    int test[] = {TYPETABLE};
-    for(int i=0; i < 13; i++){
-        for(int j=0; j<11; j++){
-            printf("|%d|", test[i*11 + j]);
+    int test[] = {KEYWORDTABLE};
+    for(int i=0; i < KEYWORDROWS; i++){
+        for(int j=0; j< KEYWORDCOLUMNS; j++){
+            printf("|%d|", test[i*KEYWORDCOLUMNS + j]);
         }
         printf("\n");
     }

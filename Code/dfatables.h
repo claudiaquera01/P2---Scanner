@@ -17,6 +17,9 @@
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 #define IDENTIFIERTABLE 0
+
+
+
 #define KEYWORDCOLUMNS 14
 #define KEYWORDROWS 19
 #define KEYWORDTABLE 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
@@ -39,8 +42,16 @@
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0,  \
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
+#define NUMBERCOLUMNS 11
+#define NUMBERROWS  3
+#define NUMBERTABLE 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, \
+                        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0
 
-
-
+#define SPECIALCOLUMNS 9
+#define SPECIALROWS 3
+#define SPECIALTABLE 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+                        2, 2, 2, 2, 2, 2, 2, 2, 0, \
+                        0, 0, 0, 0, 0, 0, 0, 0, 0
 
 #endif // DFATABLES_H

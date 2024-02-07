@@ -31,7 +31,7 @@ typedef enum {
 } TokenCategory;
 
 // Define token structure
-typedef struct { //TODO: <- there is a name mussing here after struct (use something like struct_token)
+typedef struct struct_token { //TODO: <- there is a name mussing here after struct (use something like struct_token)
     char lexeme[MAX_LEXEME_LENGTH];
     TokenCategory category;
     int line_number; // For DEBUG mode

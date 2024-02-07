@@ -15,7 +15,7 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int* _final_stat
     dfa->final_states = _final_states; 
     dfa->len_final_states = _len_final_states; 
 
-    dfa->initial_state = 1; // deafult values
+    dfa->initial_state = 1; // default values
     dfa->current_state = 1; 
 
     dfa->alive = true; 
@@ -36,13 +36,13 @@ int get_symbol_index_BS(char* list, int len, char element) {
             l = m + 1; 
         } else if (element < list[m]) {
             r = m - 1; 
-        } else { // elemnet == list[m]
+        } else { // element == list[m]
             return m; 
         }
 
     }
 
-    return -1; //unsuccessfull
+    return -1; //unsuccessful
 
 }
 

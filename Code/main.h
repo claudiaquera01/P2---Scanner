@@ -5,6 +5,7 @@
 #include "scanner.h"
 #include "debug.h"
 #include "datastructures.h"
+#include "dfatables.h"
 
 
 

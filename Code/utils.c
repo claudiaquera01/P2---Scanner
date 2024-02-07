@@ -1,12 +1,5 @@
 #include "utils.h"
 
-
-
-
-
-
-
-
 void sort_chars(char* array, int len) {
     // the trustworthy bubblesort
     char temp;

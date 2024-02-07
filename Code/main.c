@@ -5,6 +5,7 @@
 char* processFile(const char* filename) {
     // Open the file
     FILE* file = fopen(filename, "rb");
+    // Handle error opening target file
     if (file == NULL) { 
         fprintf(stderr, "Error opening file: %s\n", filename);
         return NULL;
@@ -12,15 +13,16 @@ char* processFile(const char* filename) {
 
     // Allocate memory for the result buffer
     char* resultBuffer = (char*)malloc(sizeof(char) * BUFFER_SIZE);
+    // Handle error when allocating the buffer
     if (resultBuffer == NULL) {
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(file);  // Close the file before returning
         return NULL;
     }
 
+    // Initializing variables to iterate through the file
     int currentChar;
     int bufferIndex = 0;
-
     // Read the file character by character
     while ((currentChar = getc(file)) != EOF) {
         // Process the current character
@@ -30,11 +32,9 @@ char* processFile(const char* filename) {
         // if current character is a delimiter, then we also finish all the dfas
         // this way the contents "x * y" will be parsed as "x| |*| |y"
 
-
-
-
-        // For now, let's just print each character
-        printf("%c", (char)currentChar);
+        // TEST: Copy file into buffer
+        resultBuffer[bufferIndex] = (char) currentChar;
+        bufferIndex++;
     } 
 
 
@@ -60,19 +60,38 @@ int main(int argc, char *argv[]) {
 
     // Call the processFile function with the filename
     char* resultBuffer = processFile(argv[1]);
-
-
+    // Handle error when  processing target file
     if (resultBuffer == NULL) {
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_FILE_PROCESSING);
         return MAIN_ERROR_FILE_PROCESSING;
     }
 
-    // TODO: Handle the resultBuffer or perform further processing
-    // For now, we'll just print the resultBuffer
-    printf("\nResult buffer: %s", resultBuffer);
+    // Preparing output filename
+    char output_filename[(strlen(argv[1]) + strlen("scn"))];
+    strcpy(output_filename, argv[1]);
+    strcat(output_filename, "scn");
 
-    // Free the result buffer when done
+    // Creating output file
+    FILE* output = fopen(output_filename, "wb");
+    // Handle error when creating output file
+    if (output == NULL) {
+        fprintf(stderr, "Error creating output file: %s\n", output_filename);
+        return MAIN_ERROR_FILE_PROCESSING;
+    }
+    // Write scanner output into output file
+    fwrite(resultBuffer, sizeof(char) * strlen(resultBuffer), 1, output);
+
+    // Upon completion, close output file and free result buffer
+    fclose(output);
     free(resultBuffer);
 
+    // TESTING DFA TABLES
+    int test[] = {TYPETABLE};
+    for(int i=0; i < 13; i++){
+        for(int j=0; j<11; j++){
+            printf("|%d|", test[i*11 + j]);
+        }
+        printf("\n");
+    }
     return SCANNER_SUCCESS;
 }

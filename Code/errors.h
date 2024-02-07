@@ -20,7 +20,7 @@ extern const char* ERROR_MESSAGE_FILE_PROCESSING;
 
 // Error messages at SCANNER
 extern const char* ERROR_MESSAGE_SCANNER_SUCCESS;
-extern const char* ERROR_MESSAGE_RROR_NONALPHABETCHAR;
+extern const char* ERROR_MESSAGE_ERROR_NONALPHABETCHAR;
 
 
 //Error messages at PREPROCESS

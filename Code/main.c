@@ -1,5 +1,6 @@
 #include "main.h"
 
+
 // Function to process a C file character by character
 int *processFile(const char *filename)
 {
@@ -160,4 +161,19 @@ char *get_file_name(char *argv1) {
     */
 
     //^this code does NOT work, you cannot allocate a non-constant space on the stack. Use malloc
+
+    size_t len = strlen(argv1);
+    char *output_filename = (char *)malloc(len + strlen("scn") + 1);
+
+    // Check if memory allocation was successful
+    if (output_filename == NULL) {
+        fprintf(stderr, "Error: Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Copy the input filename to the output filename, appending .scn to it
+    strcpy(output_filename, argv1);
+    strcat(output_filename, "scn");
+
+    return output_filename;
 }

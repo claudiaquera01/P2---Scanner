@@ -5,7 +5,7 @@
 int *processFile(const char *filename)
 {
     // Open the file
-    FILE *input_file = fopen(filename, "rb"); // open as binary
+    FILE* input_file = fopen(filename, "rb"); // open as binary
     // Handle error opening target file
     if (input_file == NULL) {
         fprintf(stderr, "Error opening file: %s\n", filename);
@@ -13,10 +13,10 @@ int *processFile(const char *filename)
     }
 
     // Preparing output filename
-    char *output_filename = get_file_name(filename);
+    char* output_filename = get_file_name(filename);
 
     // Creating output file
-    FILE *output_file = fopen(output_filename, "wb");
+    FILE* output_file = fopen(output_filename, "wb");
     if (output_file == NULL){ // Handle error when creating output file
         fprintf(stderr, "Error creating output file: %s\n", output_filename);
         return MAIN_ERROR_FILE_PROCESSING;
@@ -25,37 +25,44 @@ int *processFile(const char *filename)
     // Upon completion, close output file and free result buffer
 
     // Allocate memory for the result buffer
-    char *resultBuffer = (char *)malloc(sizeof(char) * BUFFER_SIZE);
-    // Handle error when allocating the buffer
-    if (resultBuffer == NULL) {
+    char* writting_buffer = (char*)malloc(sizeof(char) * BUFFER_SIZE);
+    if (writting_buffer == NULL) { // Handle error when allocating the buffer
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
         return 2; // TODO: cahnge for define error
     }
 
+    char* current_token = (char*)malloc(sizeof(char) * BUFFER_SIZE); // buffer of the raw token
+    if (current_token == NULL) { // Handle error when allocating the buffer
+        fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
+        fclose(input_file); // Close the file before returning
+        return 2; // TODO: cahnge for define error
+    }
+    current_token[0] = '\0'; // to prevent 1 bug, dont remove
+
+
     DFA dfas[NUM_DFA];
     // TODO: initialize all DFAs
 
-    // why is currentcahr an int ????
+    // =======================================================================================
+    // =======================================================================================
+    // =======================================================================================
+
     int currentChar = getc(input_file); // Initializing variables to iterate through the file
-    char look_ahead = getc(input_file);
+    int look_ahead = getc(input_file);
     bool is_current_char_delimiter = is_delimiter((char)currentChar);
     bool is_look_ahead_delimiter = is_delimiter((char)look_ahead);
-    int bufferIndex = 0;
+    int writ_buff_idx = 0;
+    int curr_token_idx = 0; //also serves as length
     // Read the file character by character
     while (currentChar != EOF) {
-        // Process the current character
 
-        // TODO: create all DFAs, initialize them, advance the dfa with the new char
-        // if next char is a delimiter, finalize all dfas and add the token to the result
-        // if current character is a delimiter, then we also finish all the dfas
-        // this way the contents "x * y" will be parsed as "x| |*| |y"
 
-        for (int i = 0; i < NUM_DFA; i++) {
+        current_token[curr_token_idx] = (char)currentChar; 
+        curr_token_idx++; 
 
-            advance_dfa(&dfas[i], currentChar);
+        for (int i = 0; i < NUM_DFA; i++)  advance_dfa(&dfas[i], (char)currentChar);
 
-        }
 
         if (is_current_char_delimiter || is_look_ahead_delimiter) {
 
@@ -63,16 +70,26 @@ int *processFile(const char *filename)
                 this check ensures that when the lookahead is a delimiter, 
                 the token is finalized. Also ensures that if the current char is 
                 a delimiter, it will be alone by itself. 
+                this way the contents "x * y" will be parsed as "x| |*| |y"
             */
 
             bool success = false;
             for (int i = 0; i < NUM_DFA; i++) {
 
                 success = finalize_dfa(&dfas[i]);
-                if (success)
-                {
-                    // TODO: get token and add it to result buffer
-                    // (also update bufferindex)
+                if (success) {
+
+                    char* processed_token = tokenize(i, current_token, curr_token_idx); 
+                    // ^current token index is also length
+                    
+                    int processed_token_len = strlen(processed_token); 
+
+                    memcpy(&writting_buffer[writ_buff_idx], processed_token, processed_token_len); 
+                    free(processed_token); 
+                    
+                    writ_buff_idx += processed_token_len; 
+
+                    curr_token_idx = 0; //reset buffer
 
                     break;
                 }
@@ -80,30 +97,92 @@ int *processFile(const char *filename)
 
             if (!success) {
                 // TODO: implement this
-                //could be space ' ' or could be an actual error
                 // think about more possible exeptions
+
+                //could be space ' ' or could be an actual error
+                if(current_token[0] != ' ') {
+                    //assume error
+                    char* processed_token = tokenize(ERROR_TOKEN, current_token, curr_token_idx); 
+                    // ^current token index is also length
+                    
+                    int processed_token_len = strlen(processed_token); 
+
+                    memcpy(&writting_buffer[writ_buff_idx], processed_token, processed_token_len); 
+                    free(processed_token); 
+                    
+                    writ_buff_idx += processed_token_len; 
+
+                    curr_token_idx = 0; //reset buffer
+                    current_token[0] = '\0'; 
+
+                } // space is not an error
             }
 
             for (int i = 0; i < NUM_DFA; i++) reset_dfa(&dfas[i]);
+
         }
 
-        // TEST: Copy file into buffer
-        resultBuffer[bufferIndex] = (char)currentChar; // write what is needed
-        bufferIndex++;                                 // update index accordingly
 
-        if (BUFFER_SIZE * BUFFER_THRESHOLD < bufferIndex) {
-            resultBuffer[bufferIndex] = '\0';
-            bufferIndex++;
+        if (BUFFER_SIZE * BUFFER_THRESHOLD < writ_buff_idx) { 
+            /*the writting buffer is starting to get full. empty it*/
+            writting_buffer[writ_buff_idx] = '\0';
 
             // Write scanner output into output file
-            fwrite(resultBuffer, sizeof(char), bufferIndex, output_file);
+            fwrite(writting_buffer, sizeof(char), writ_buff_idx + 1, output_file);
 
-            bufferIndex = 0; // start again
+            writ_buff_idx = 0; // start again
         }
         currentChar = look_ahead; // update chars
-        look_ahead = (char)getc(input_file);
+        look_ahead = getc(input_file);
         is_current_char_delimiter = is_look_ahead_delimiter;
         is_look_ahead_delimiter = is_delimiter(look_ahead);
+    }
+
+
+    // Do last iteration
+
+    {
+        //its weird but it could finalize with a valid token
+        bool success = false;
+        for (int i = 0; i < NUM_DFA; i++) {
+
+            success = finalize_dfa(&dfas[i]);
+            if (success) {
+
+                char* processed_token = tokenize(i, current_token, curr_token_idx); 
+                // ^current token index is also length
+                
+                int processed_token_len = strlen(processed_token); 
+
+                memcpy(&writting_buffer[writ_buff_idx], processed_token, processed_token_len); 
+                free(processed_token); 
+                writ_buff_idx += processed_token_len; 
+
+                curr_token_idx = 0; //reset buffer
+
+
+                break;
+            }
+        }
+
+        if (!success) {
+            if(current_token[0] != ' ') {
+
+                char* processed_token = tokenize(ERROR_TOKEN, current_token, curr_token_idx); 
+                // ^current token index is also length
+                
+                int processed_token_len = strlen(processed_token); 
+
+                memcpy(&writting_buffer[writ_buff_idx], processed_token, processed_token_len); 
+                free(processed_token); 
+                
+                writ_buff_idx += processed_token_len; 
+                curr_token_idx = 0; //reset buffer
+                current_token[0] = '\0'; 
+
+            } // space is not an error
+        }
+
     }
 
     // End all dfas
@@ -111,8 +190,9 @@ int *processFile(const char *filename)
     for (int i = 0; i < NUM_DFA; i++) free_dfa(&dfas[i]); //free all dfas
 
     // Close the file
-    free(resultBuffer);
+    free(writting_buffer);
     free(output_filename);
+    free(current_token); 
 
     fclose(input_file);
     fclose(output_file);
@@ -130,9 +210,9 @@ int main(int argc, char *argv[])
     }
 
     // Call the processFile function with the filename
-    char *resultBuffer = processFile(argv[1]);
+    int process_return = processFile(argv[1]);
     // Handle error when  processing target file
-    if (resultBuffer == NULL) {
+    if (process_return != 0) {
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_FILE_PROCESSING);
         return MAIN_ERROR_FILE_PROCESSING;
     }
@@ -150,20 +230,8 @@ int main(int argc, char *argv[])
 
 char *get_file_name(char *argv1) {
 
-    // TODO: complete this
-    // Allocate space for new name, construct it and return
-
-    /*
-    char name[(strlen(argv[1]) + strlen("scn"))];
-    strcpy(output_filename, argv[1]);
-    strcat(output_filename, "scn");
-
-    */
-
-    //^this code does NOT work, you cannot allocate a non-constant space on the stack. Use malloc
-
     size_t len = strlen(argv1);
-    char *output_filename = (char *)malloc(len + strlen("scn") + 1);
+    char* output_filename = (char *)malloc(len + strlen("scn") + 1);
 
     // Check if memory allocation was successful
     if (output_filename == NULL) {

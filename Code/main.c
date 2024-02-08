@@ -29,14 +29,14 @@ int processFile(const char *filename)
     if (writting_buffer == NULL) { // Handle error when allocating the buffer
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
-        return MAIN_ERROR_MISSING_FILENAME; // TODO: cahnge for define error
+        return PREPROCESS_ERROR_MEMORY_ALLOCATION; // TODO: cahnge for define error
     }
 
     char* current_token = (char*)malloc(sizeof(char) * BUFFER_SIZE); // buffer of the raw token
     if (current_token == NULL) { // Handle error when allocating the buffer
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
-        return MAIN_ERROR_MISSING_FILENAME; // TODO: cahnge for define error
+        return PREPROCESS_ERROR_MEMORY_ALLOCATION; // TODO: cahnge for define error
     }
     current_token[0] = '\0'; // to prevent 1 bug, dont remove
 

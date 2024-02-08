@@ -54,17 +54,15 @@ char *processFile(const char *filename)
         // if current character is a delimiter, then we also finish all the dfas
         // this way the contents "x * y" will be parsed as "x| |*| |y"
 
-        for (int i = 0; i < NUM_DFA; i++)
-        {
+        for (int i = 0; i < NUM_DFA; i++) {
 
             advance_dfa(&dfas[i], currentChar);
+
         }
 
-        if (is_current_char_delimiter || is_look_ahead_delimiter)
-        {
+        if (is_current_char_delimiter || is_look_ahead_delimiter) {
             bool success = false;
-            for (int i = 0; i < NUM_DFA; i++)
-            {
+            for (int i = 0; i < NUM_DFA; i++) {
 
                 success = finalize_dfa(&dfas[i]);
                 if (success)
@@ -76,23 +74,20 @@ char *processFile(const char *filename)
                 }
             }
 
-            if (!success)
-            {
+            if (!success) {
                 // TODO: could be space ' ' or could be an actual error
                 // think about more possible exeptions
                 // implement this
             }
 
-            for (int i = 0; i < NUM_DFA; i++)
-                reset_dfa(&dfas[i]);
+            for (int i = 0; i < NUM_DFA; i++) reset_dfa(&dfas[i]);
         }
 
         // TEST: Copy file into buffer
         resultBuffer[bufferIndex] = (char)currentChar; // write what is needed
         bufferIndex++;                                 // update index accordingly
 
-        if (BUFFER_SIZE * BUFFER_THRESHOLD < bufferIndex)
-        {
+        if (BUFFER_SIZE * BUFFER_THRESHOLD < bufferIndex) {
             resultBuffer[bufferIndex] = '\0';
             bufferIndex++;
 
@@ -109,8 +104,7 @@ char *processFile(const char *filename)
 
     // End all dfas
 
-    for (int i = 0; i < NUM_DFA; i++)
-        free_dfa(&dfas[i]);
+    for (int i = 0; i < NUM_DFA; i++) free_dfa(&dfas[i]);
 
     // Close the file
     free(resultBuffer);
@@ -125,8 +119,7 @@ char *processFile(const char *filename)
 int main(int argc, char *argv[])
 {
     // Check if a file name is provided as a command-line argument
-    if (argc != 2)
-    {
+    if (argc != 2) {
         fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MISSING_FILENAME);
         return MAIN_ERROR_MISSING_FILENAME;
@@ -135,18 +128,15 @@ int main(int argc, char *argv[])
     // Call the processFile function with the filename
     char *resultBuffer = processFile(argv[1]);
     // Handle error when  processing target file
-    if (resultBuffer == NULL)
-    {
+    if (resultBuffer == NULL) {
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_FILE_PROCESSING);
         return MAIN_ERROR_FILE_PROCESSING;
     }
 
     // TESTING DFA TABLES
     int test[] = {KEYWORDTABLE};
-    for (int i = 0; i < KEYWORDROWS; i++)
-    {
-        for (int j = 0; j < KEYWORDCOLUMNS; j++)
-        {
+    for (int i = 0; i < KEYWORDROWS; i++) {
+        for (int j = 0; j < KEYWORDCOLUMNS; j++) {
             printf("|%d|", test[i * KEYWORDCOLUMNS + j]);
         }
         printf("\n");
@@ -154,8 +144,7 @@ int main(int argc, char *argv[])
     return SCANNER_SUCCESS;
 }
 
-char *get_file_name(char *argv1)
-{
+char *get_file_name(char *argv1) {
 
     // TODO: complete this
     // Allocate space for new name, construct it and return
@@ -167,5 +156,5 @@ char *get_file_name(char *argv1)
 
     */
 
-    //^this does NOT work, you cannot allocate a non-constant space on the stack. Use malloc
+    //^this code does NOT work, you cannot allocate a non-constant space on the stack. Use malloc
 }

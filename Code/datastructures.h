@@ -10,8 +10,7 @@
 
 #define MAX_LEXEME_LENGTH 100
 
-typedef enum
-{
+typedef enum {
     CAT_NUMBER,
     CAT_IDENTIFIER,
     CAT_KEYWORD,
@@ -22,8 +21,7 @@ typedef enum
 } TokenCategory;
 
 // Define token structure
-typedef struct struct_token
-{ // TODO: <- there is a name mussing here after struct (use something like struct_token)
+typedef struct struct_token { 
     char lexeme[MAX_LEXEME_LENGTH];
     TokenCategory category;
     int line_number; // For DEBUG mode
@@ -62,8 +60,7 @@ and set_dfa_transition_table_value(). DFA holds ownership of transition_table
 alive is true if the automata has NOT reached the rejectiong state (0).
 
 */
-typedef struct struct_dfa
-{
+typedef struct struct_dfa {
 
     char *alphabet;
     int len_alphabet;

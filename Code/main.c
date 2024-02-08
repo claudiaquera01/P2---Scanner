@@ -4,49 +4,49 @@
 char *processFile(const char *filename)
 {
     // Open the file
-    FILE* input_file = fopen(filename, "rb"); // open as binary
+    FILE *input_file = fopen(filename, "rb"); // open as binary
     // Handle error opening target file
-    if (input_file == NULL) {
+    if (input_file == NULL)
+    {
         fprintf(stderr, "Error opening file: %s\n", filename);
         return NULL;
     }
 
-
     // Preparing output filename
-    char* output_filename = get_file_name(filename);
+    char *output_filename = get_file_name(filename);
 
     // Creating output file
     FILE *output_file = fopen(output_filename, "wb");
-    if (output_file == NULL) { // Handle error when creating output file
+    if (output_file == NULL)
+    { // Handle error when creating output file
         fprintf(stderr, "Error creating output file: %s\n", output_filename);
         return MAIN_ERROR_FILE_PROCESSING;
     }
 
-
     // Upon completion, close output file and free result buffer
 
-
     // Allocate memory for the result buffer
-    char* resultBuffer = (char *)malloc(sizeof(char) * BUFFER_SIZE);
+    char *resultBuffer = (char *)malloc(sizeof(char) * BUFFER_SIZE);
     // Handle error when allocating the buffer
-    if (resultBuffer == NULL) {
+    if (resultBuffer == NULL)
+    {
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
         return NULL;
     }
-    
-    DFA dfas[NUM_DFA]; 
+
+    DFA dfas[NUM_DFA];
     // TODO: initialize all DFAs
 
-
-    //why is currentcahr an int ????
+    // why is currentcahr an int ????
     int currentChar = getc(input_file); // Initializing variables to iterate through the file
-    char look_ahead = getc(input_file); 
-    bool is_current_char_delimiter = is_delimiter((char)currentChar); 
-    bool is_look_ahead_delimiter = is_delimiter((char)look_ahead); 
+    char look_ahead = getc(input_file);
+    bool is_current_char_delimiter = is_delimiter((char)currentChar);
+    bool is_look_ahead_delimiter = is_delimiter((char)look_ahead);
     int bufferIndex = 0;
     // Read the file character by character
-    while (currentChar != EOF) {
+    while (currentChar != EOF)
+    {
         // Process the current character
 
         // TODO: create all DFAs, initialize them, advance the dfa with the new char
@@ -54,67 +54,67 @@ char *processFile(const char *filename)
         // if current character is a delimiter, then we also finish all the dfas
         // this way the contents "x * y" will be parsed as "x| |*| |y"
 
-        for(int i = 0; i < NUM_DFA; i++) {
+        for (int i = 0; i < NUM_DFA; i++)
+        {
 
-            advance_dfa(&dfas[i], currentChar); 
-
+            advance_dfa(&dfas[i], currentChar);
         }
 
-        if(is_current_char_delimiter || is_look_ahead_delimiter) { 
-            bool success = false; 
-            for(int i = 0; i < NUM_DFA; i++) {
+        if (is_current_char_delimiter || is_look_ahead_delimiter)
+        {
+            bool success = false;
+            for (int i = 0; i < NUM_DFA; i++)
+            {
 
-                success = finalize_dfa(&dfas[i]); 
-                if(success) {
-                    // TODO: get token and add it to result buffer 
-                    // (also update bufferindex) 
+                success = finalize_dfa(&dfas[i]);
+                if (success)
+                {
+                    // TODO: get token and add it to result buffer
+                    // (also update bufferindex)
 
-                    break; 
+                    break;
                 }
-
             }
 
-            if(!success) {
+            if (!success)
+            {
                 // TODO: could be space ' ' or could be an actual error
                 // think about more possible exeptions
                 // implement this
             }
 
-            for(int i = 0; i < NUM_DFA; i++) reset_dfa(&dfas[i]); 
-
+            for (int i = 0; i < NUM_DFA; i++)
+                reset_dfa(&dfas[i]);
         }
 
         // TEST: Copy file into buffer
-        resultBuffer[bufferIndex] = (char)currentChar; //write what is needed
-        bufferIndex++; // update index accordingly
+        resultBuffer[bufferIndex] = (char)currentChar; // write what is needed
+        bufferIndex++;                                 // update index accordingly
 
-
-
-        if(BUFFER_SIZE * BUFFER_THRESHOLD < bufferIndex) {
-            resultBuffer[bufferIndex] = '\0'; 
+        if (BUFFER_SIZE * BUFFER_THRESHOLD < bufferIndex)
+        {
+            resultBuffer[bufferIndex] = '\0';
             bufferIndex++;
 
             // Write scanner output into output file
-            fwrite(resultBuffer, sizeof(char), bufferIndex, output_file); 
+            fwrite(resultBuffer, sizeof(char), bufferIndex, output_file);
 
-            bufferIndex = 0; //start again
-        } 
-        currentChar = look_ahead; //update chars
-        look_ahead = (char)getc(input_file); 
-        is_current_char_delimiter = is_look_ahead_delimiter; 
-        is_look_ahead_delimiter = is_delimiter(look_ahead); 
-
+            bufferIndex = 0; // start again
+        }
+        currentChar = look_ahead; // update chars
+        look_ahead = (char)getc(input_file);
+        is_current_char_delimiter = is_look_ahead_delimiter;
+        is_look_ahead_delimiter = is_delimiter(look_ahead);
     }
-
 
     // End all dfas
 
-    for(int i = 0; i < NUM_DFA; i++) free_dfa(&dfas[i]); 
-
+    for (int i = 0; i < NUM_DFA; i++)
+        free_dfa(&dfas[i]);
 
     // Close the file
-    free(resultBuffer); 
-    free(output_filename); 
+    free(resultBuffer);
+    free(output_filename);
 
     fclose(input_file);
     fclose(output_file);

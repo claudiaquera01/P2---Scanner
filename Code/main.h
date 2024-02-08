@@ -1,11 +1,12 @@
 #ifndef MAIN_HEADER
 #define MAIN_HEADER
 
+#include "dfatables.h"
 #include "errors.h"
 #include "scanner.h"
 #include "debug.h"
 #include "datastructures.h"
-#include "dfatables.h"
+
 
 #include <stdio.h>
 #include <stdlib.h>

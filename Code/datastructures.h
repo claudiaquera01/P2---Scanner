@@ -70,8 +70,7 @@ typedef struct struct_dfa {
     int initial_state;
     int current_state;
 
-    int *final_states;
-    int len_final_states;
+    int final_state;
 
     bool alive;
 
@@ -87,7 +86,7 @@ Also note that the alphabet must be constant during the live of the dfa and must
 Note: the transition table is initialized to values of 0 (go to rejecting state),
 the correct values must be set later. see set_dfa_transition_table_value()
 */
-void initialize_dfa(DFA *dfa, char *_alphabet, int _num_states, int *_final_states, int _len_final_states);
+void initialize_dfa(DFA *dfa, char *_alphabet, int _num_states, int _final_state);
 
 /*
 moves the dfa to the next state (according to dfa.current_state, dfa.transition_table

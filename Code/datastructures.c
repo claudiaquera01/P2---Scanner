@@ -1,8 +1,8 @@
 
 #include "datastructures.h"
+#include "dfatables.h"
 
-
-void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int* _final_states, int _len_final_states) {
+void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _final_state) {
 
     dfa->alphabet = _alphabet; 
     dfa->len_alphabet = strlen(dfa->alphabet); 
@@ -12,11 +12,10 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int* _final_stat
     // ^ all the table is initialized to 0. this way, if a connection is not defined, the 
     // DFA will automatically reject the string
 
-    dfa->final_states = _final_states; 
-    dfa->len_final_states = _len_final_states; 
+    dfa->final_state = _final_state;
 
-    dfa->initial_state = 1; // default values
-    dfa->current_state = 1; 
+    dfa->initial_state = INITIALSTATE; // default values
+    dfa->current_state = INITIALSTATE;
 
     dfa->alive = true; 
 
@@ -73,7 +72,7 @@ int set_dfa_transition_table_value(DFA* dfa, int state, char symbol, int new_sta
 void advance_dfa(DFA* dfa, char symbol) {
     int char_index = get_symbol_index_BS(dfa->alphabet, dfa->len_alphabet, symbol); // get column of the transition table
     if(char_index == -1) { //reject
-        dfa->current_state = 0; 
+        dfa->current_state = REJECTSTATE;
         dfa->alive = false; 
         return; 
     }
@@ -95,26 +94,21 @@ bool finalize_dfa(DFA* dfa) {
     if(!dfa->alive) return false; 
 
     int final_state = dfa->current_state; 
-
-    for(int i = 0; i < dfa->len_final_states; i++) {
-
-        if(final_state == dfa->final_states[i]) {
-            return true; 
-        }
+    if(final_state == dfa->final_state) {
+        return true;
     }
 
     return false; 
 }
 
 void reset_dfa(DFA* dfa) {
-    dfa->current_state = 1; 
+    dfa->current_state = INITIALSTATE;
     dfa->alive = true; 
 }
 
 void free_dfa(DFA* dfa) {
 
-    free(dfa->transition_table); 
-    free(dfa->final_states); 
+    free(dfa->transition_table);
 
 }
 

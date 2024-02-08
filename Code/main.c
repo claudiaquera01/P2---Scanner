@@ -9,7 +9,7 @@ int processFile(const char *filename)
     // Handle error opening target file
     if (input_file == NULL) {
         fprintf(stderr, "Error opening file: %s\n", filename);
-        return 1; // TODO: cahnge for define error
+        return MAIN_ERROR_CANT_READ_FILE; // TODO: cahnge for define error
     }
 
     // Preparing output filename
@@ -29,14 +29,14 @@ int processFile(const char *filename)
     if (writting_buffer == NULL) { // Handle error when allocating the buffer
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
-        return 2; // TODO: cahnge for define error
+        return MAIN_ERROR_MISSING_FILENAME; // TODO: cahnge for define error
     }
 
     char* current_token = (char*)malloc(sizeof(char) * BUFFER_SIZE); // buffer of the raw token
     if (current_token == NULL) { // Handle error when allocating the buffer
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
-        return 2; // TODO: cahnge for define error
+        return MAIN_ERROR_MISSING_FILENAME; // TODO: cahnge for define error
     }
     current_token[0] = '\0'; // to prevent 1 bug, dont remove
 

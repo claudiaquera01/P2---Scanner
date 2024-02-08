@@ -30,4 +30,19 @@ void sort_chars(char *array, int len);
 /*returns true/false depending on if it is a delimiter or not*/
 bool is_delimiter(char *c); // TODO: still not implemented
 
+
+
+/*
+returns "<element, IDENTIFIACOR_TAG>"
+identificator is the id of the dfa (i.e. DFA_IDENTIFIER, DFA_OPERATORS, ...) 
+(look at the top of utils.h). does NOT hold ownership of element. 
+
+len is the length of element. 
+
+element is the string that was identified by the DFA. 
+
+*/
+char* tokenize(int identificator, char* element, int len); 
+
+
 #endif

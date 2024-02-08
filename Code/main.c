@@ -2,7 +2,7 @@
 
 
 // Function to process a C file character by character
-int *processFile(const char *filename)
+int processFile(const char *filename)
 {
     // Open the file
     FILE* input_file = fopen(filename, "rb"); // open as binary

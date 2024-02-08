@@ -43,7 +43,20 @@ int processFile(const char *filename)
 
     DFA dfas[NUM_DFA];
     // TODO: initialize all DFAs
-
+    char typealphabet[TYPECOLUMNS] = {TYPEALPHABET};
+    initialize_dfa(&dfas[TYPEDFA], typealphabet, TYPEROWS, TYPEACCEPT);
+    char identifieralphabet[IDENTIFIERCOLUMNS] = {IDENTIFIERALPHABET};
+    initialize_dfa(&dfas[IDENTIFIERDFA], identifieralphabet, IDENTIFIERROWS, IDENTIFIERACCEPT);
+    char keywordalphabet[KEYWORDCOLUMNS] = {KEYWORDALPHABET};
+    initialize_dfa(&dfas[KEYWORDDFA], keywordalphabet, KEYWORDROWS, KEYWORDACCEPT);
+    char numberalphabet[NUMBERCOLUMNS] = {NUMBERALPHABET};
+    initialize_dfa(&dfas[NUMBERDFA], numberalphabet, NUMBERROWS, NUMBERACCEPT);
+    char specialalphabet[SPECIALCOLUMNS] = {SPECIALALPHABET};
+    initialize_dfa(&dfas[SPECIALDFA], specialalphabet, SPECIALROWS, SPECIALACCEPT);
+    char operatoralphabet[OPERATORCOLUMNS] = {OPERATORALPHABET};
+    initialize_dfa(&dfas[OPERATORDFA], operatoralphabet, OPERATORROWS, OPERATORACCEPT);
+    char literalalphabet[LITERALCOLUMNS] = {LITERALALPHABET};
+    initialize_dfa(&dfas[LITERALDFA], literalalphabet, LITERALROWS, LITERALACCEPT);
     // =======================================================================================
     // =======================================================================================
     // =======================================================================================

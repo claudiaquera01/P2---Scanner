@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
     return SCANNER_SUCCESS;
 }
 
-char *get_file_name(const char *argv1) {
+char *get_file_name(char *argv1) {
 
     // TODO: complete this
     // Allocate space for new name, construct it and return

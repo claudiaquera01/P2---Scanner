@@ -1,15 +1,14 @@
 #include "main.h"
 
 // Function to process a C file character by character
-char *processFile(const char *filename)
+int *processFile(const char *filename)
 {
     // Open the file
     FILE *input_file = fopen(filename, "rb"); // open as binary
     // Handle error opening target file
-    if (input_file == NULL)
-    {
+    if (input_file == NULL) {
         fprintf(stderr, "Error opening file: %s\n", filename);
-        return NULL;
+        return 1; // TODO: cahnge for define error
     }
 
     // Preparing output filename
@@ -17,8 +16,7 @@ char *processFile(const char *filename)
 
     // Creating output file
     FILE *output_file = fopen(output_filename, "wb");
-    if (output_file == NULL)
-    { // Handle error when creating output file
+    if (output_file == NULL){ // Handle error when creating output file
         fprintf(stderr, "Error creating output file: %s\n", output_filename);
         return MAIN_ERROR_FILE_PROCESSING;
     }
@@ -28,11 +26,10 @@ char *processFile(const char *filename)
     // Allocate memory for the result buffer
     char *resultBuffer = (char *)malloc(sizeof(char) * BUFFER_SIZE);
     // Handle error when allocating the buffer
-    if (resultBuffer == NULL)
-    {
+    if (resultBuffer == NULL) {
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
-        return NULL;
+        return 2; // TODO: cahnge for define error
     }
 
     DFA dfas[NUM_DFA];
@@ -45,8 +42,7 @@ char *processFile(const char *filename)
     bool is_look_ahead_delimiter = is_delimiter((char)look_ahead);
     int bufferIndex = 0;
     // Read the file character by character
-    while (currentChar != EOF)
-    {
+    while (currentChar != EOF) {
         // Process the current character
 
         // TODO: create all DFAs, initialize them, advance the dfa with the new char
@@ -61,6 +57,13 @@ char *processFile(const char *filename)
         }
 
         if (is_current_char_delimiter || is_look_ahead_delimiter) {
+
+            /*
+                this check ensures that when the lookahead is a delimiter, 
+                the token is finalized. Also ensures that if the current char is 
+                a delimiter, it will be alone by itself. 
+            */
+
             bool success = false;
             for (int i = 0; i < NUM_DFA; i++) {
 
@@ -75,9 +78,9 @@ char *processFile(const char *filename)
             }
 
             if (!success) {
-                // TODO: could be space ' ' or could be an actual error
+                // TODO: implement this
+                //could be space ' ' or could be an actual error
                 // think about more possible exeptions
-                // implement this
             }
 
             for (int i = 0; i < NUM_DFA; i++) reset_dfa(&dfas[i]);
@@ -104,7 +107,7 @@ char *processFile(const char *filename)
 
     // End all dfas
 
-    for (int i = 0; i < NUM_DFA; i++) free_dfa(&dfas[i]);
+    for (int i = 0; i < NUM_DFA; i++) free_dfa(&dfas[i]); //free all dfas
 
     // Close the file
     free(resultBuffer);
@@ -113,7 +116,7 @@ char *processFile(const char *filename)
     fclose(input_file);
     fclose(output_file);
 
-    return 0;
+    return 0; //return success
 }
 
 int main(int argc, char *argv[])

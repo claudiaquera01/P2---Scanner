@@ -108,7 +108,7 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int* _final_stat
 moves the dfa to the next state (according to dfa.current_state, dfa.transition_table 
 and symbol)
 */
-void move_dfa(DFA* dfa, char symbol); 
+void advance_dfa(DFA* dfa, char symbol); 
 
 /*
     checks if dfa is in end state. returns true if dfa accepts or false otherwise
@@ -119,17 +119,6 @@ bool finalize_dfa(DFA* dfa);
     resets the dfa back to the initial state and back to being alive
 */
 void reset_dfa(DFA* dfa); 
-
-/*
-uses binary search to determinate the index of the element element in list. 
-list must be sorted and len is the length of the list. 
-
-returns the index of element or -1 if the element is not found in the list
-
-this will be used in the dfa for moving the state with the transition table
-
-*/
-int get_symbol_index_BS(char* list, int len, char element); 
 
 /*
 returns the new state a dfa would go from curr_state when reciving new_char. 
@@ -163,7 +152,16 @@ void free_dfa(DFA* dfa);
 
 
 
+/*
+uses binary search to determinate the index of the element element in list. 
+list must be sorted and len is the length of the list. 
 
+returns the index of element or -1 if the element is not found in the list
+
+this will be used in the dfa for moving the state with the transition table
+
+*/
+int get_symbol_index_BS(char* list, int len, char element); 
 
 
 

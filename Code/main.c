@@ -1,30 +1,52 @@
 #include "main.h"
 
-
 // Function to process a C file character by character
-char* processFile(const char* filename) {
+char *processFile(const char *filename)
+{
     // Open the file
-    FILE* file = fopen(filename, "rb");
+    FILE* input_file = fopen(filename, "rb"); // open as binary
     // Handle error opening target file
-    if (file == NULL) { 
+    if (input_file == NULL) {
         fprintf(stderr, "Error opening file: %s\n", filename);
         return NULL;
     }
 
+
+    // Preparing output filename
+    char* output_filename = get_file_name(filename);
+
+    // Creating output file
+    FILE *output_file = fopen(output_filename, "wb");
+    if (output_file == NULL) { // Handle error when creating output file
+        fprintf(stderr, "Error creating output file: %s\n", output_filename);
+        return MAIN_ERROR_FILE_PROCESSING;
+    }
+
+
+    // Upon completion, close output file and free result buffer
+
+
     // Allocate memory for the result buffer
-    char* resultBuffer = (char*)malloc(sizeof(char) * BUFFER_SIZE);
+    char* resultBuffer = (char *)malloc(sizeof(char) * BUFFER_SIZE);
     // Handle error when allocating the buffer
     if (resultBuffer == NULL) {
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
-        fclose(file);  // Close the file before returning
+        fclose(input_file); // Close the file before returning
         return NULL;
     }
+    
+    DFA dfas[NUM_DFA]; 
+    // TODO: initialize all DFAs
 
-    // Initializing variables to iterate through the file
-    int currentChar;
+
+    //why is currentcahr an int ????
+    int currentChar = getc(input_file); // Initializing variables to iterate through the file
+    char look_ahead = getc(input_file); 
+    bool is_current_char_delimiter = is_delimiter((char)currentChar); 
+    bool is_look_ahead_delimiter = is_delimiter((char)look_ahead); 
     int bufferIndex = 0;
     // Read the file character by character
-    while ((currentChar = getc(file)) != EOF) {
+    while (currentChar != EOF) {
         // Process the current character
 
         // TODO: create all DFAs, initialize them, advance the dfa with the new char
@@ -32,66 +54,118 @@ char* processFile(const char* filename) {
         // if current character is a delimiter, then we also finish all the dfas
         // this way the contents "x * y" will be parsed as "x| |*| |y"
 
+        for(int i = 0; i < NUM_DFA; i++) {
+
+            advance_dfa(&dfas[i], currentChar); 
+
+        }
+
+        if(is_current_char_delimiter || is_look_ahead_delimiter) { 
+            bool success = false; 
+            for(int i = 0; i < NUM_DFA; i++) {
+
+                success = finalize_dfa(&dfas[i]); 
+                if(success) {
+                    // TODO: get token and add it to result buffer 
+                    // (also update bufferindex) 
+
+                    break; 
+                }
+
+            }
+
+            if(!success) {
+                // TODO: could be space ' ' or could be an actual error
+                // think about more possible exeptions
+                // implement this
+            }
+
+            for(int i = 0; i < NUM_DFA; i++) reset_dfa(&dfas[i]); 
+
+        }
+
         // TEST: Copy file into buffer
-        resultBuffer[bufferIndex] = (char) currentChar;
-        bufferIndex++;
-    } 
+        resultBuffer[bufferIndex] = (char)currentChar; //write what is needed
+        bufferIndex++; // update index accordingly
 
 
 
-    //TODO: redo ^this. We need to write then the buffer is full and start again with a new empty buffer
+        if(BUFFER_SIZE * BUFFER_THRESHOLD < bufferIndex) {
+            resultBuffer[bufferIndex] = '\0'; 
+            bufferIndex++;
 
-    //End all dfas
+            // Write scanner output into output file
+            fwrite(resultBuffer, sizeof(char), bufferIndex, output_file); 
+
+            bufferIndex = 0; //start again
+        } 
+        currentChar = look_ahead; //update chars
+        look_ahead = (char)getc(input_file); 
+        is_current_char_delimiter = is_look_ahead_delimiter; 
+        is_look_ahead_delimiter = is_delimiter(look_ahead); 
+
+    }
+
+
+    // End all dfas
+
+    for(int i = 0; i < NUM_DFA; i++) free_dfa(&dfas[i]); 
+
 
     // Close the file
-    fclose(file);
+    free(resultBuffer); 
+    free(output_filename); 
 
-    // TODO: Return the result buffer or perform further processing
-    return resultBuffer;
+    fclose(input_file);
+    fclose(output_file);
+
+    return 0;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     // Check if a file name is provided as a command-line argument
-    if (argc != 2) {
+    if (argc != 2)
+    {
         fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MISSING_FILENAME);
         return MAIN_ERROR_MISSING_FILENAME;
     }
 
     // Call the processFile function with the filename
-    char* resultBuffer = processFile(argv[1]);
+    char *resultBuffer = processFile(argv[1]);
     // Handle error when  processing target file
-    if (resultBuffer == NULL) {
+    if (resultBuffer == NULL)
+    {
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_FILE_PROCESSING);
         return MAIN_ERROR_FILE_PROCESSING;
     }
 
-    // Preparing output filename
-    char output_filename[(strlen(argv[1]) + strlen("scn"))];
-    strcpy(output_filename, argv[1]);
-    strcat(output_filename, "scn");
-
-    // Creating output file
-    FILE* output = fopen(output_filename, "wb");
-    // Handle error when creating output file
-    if (output == NULL) {
-        fprintf(stderr, "Error creating output file: %s\n", output_filename);
-        return MAIN_ERROR_FILE_PROCESSING;
-    }
-    // Write scanner output into output file
-    fwrite(resultBuffer, sizeof(char) * strlen(resultBuffer), 1, output);
-
-    // Upon completion, close output file and free result buffer
-    fclose(output);
-    free(resultBuffer);
-
     // TESTING DFA TABLES
     int test[] = {KEYWORDTABLE};
-    for(int i=0; i < KEYWORDROWS; i++){
-        for(int j=0; j< KEYWORDCOLUMNS; j++){
-            printf("|%d|", test[i*KEYWORDCOLUMNS + j]);
+    for (int i = 0; i < KEYWORDROWS; i++)
+    {
+        for (int j = 0; j < KEYWORDCOLUMNS; j++)
+        {
+            printf("|%d|", test[i * KEYWORDCOLUMNS + j]);
         }
         printf("\n");
     }
     return SCANNER_SUCCESS;
+}
+
+char *get_file_name(char *argv1)
+{
+
+    // TODO: complete this
+    // Allocate space for new name, construct it and return
+
+    /*
+    char name[(strlen(argv[1]) + strlen("scn"))];
+    strcpy(output_filename, argv[1]);
+    strcat(output_filename, "scn");
+
+    */
+
+    //^this does NOT work, you cannot allocate a non-constant space on the stack. Use malloc
 }

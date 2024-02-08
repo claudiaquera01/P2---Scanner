@@ -22,8 +22,6 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int* _final_stat
 
 }
 
-
-
 int get_symbol_index_BS(char* list, int len, char element) {
     //binary search
     int l = 0; //left
@@ -45,8 +43,6 @@ int get_symbol_index_BS(char* list, int len, char element) {
     return -1; //unsuccessful
 
 }
-
-
 
 int get_dfa_transition_table_value(DFA* dfa, int curr_state, char symbol) {
 
@@ -74,7 +70,7 @@ int set_dfa_transition_table_value(DFA* dfa, int state, char symbol, int new_sta
 
 }
 
-void move_dfa(DFA* dfa, char symbol) {
+void advance_dfa(DFA* dfa, char symbol) {
     int char_index = get_symbol_index_BS(dfa->alphabet, dfa->len_alphabet, symbol); // get column of the transition table
     if(char_index == -1) { //reject
         dfa->current_state = 0; 

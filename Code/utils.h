@@ -2,6 +2,17 @@
 #define UTILS_HEADER
 
 
+#define NUM_DFA 7 
+
+#define DFA_TYPES 0
+#define DFA_IDENTIFIER 1
+#define DFA_KEYWORDS 2 
+#define DFA_NUMBERS 3
+#define DFA_SPECIAL_CHAR 4 
+#define DFA_OPERATORS 5 
+#define DFA_LITERALS 6 
+
+
 
 
 
@@ -20,6 +31,10 @@ To easly fix it, substitute by the following.
 
 */
 void sort_chars(char* array, int len); 
+
+
+/*returns true/false depending on if it is a delimiter or not*/
+bool is_delimiter(char* c); // TODO: still not implemented
 
 
 

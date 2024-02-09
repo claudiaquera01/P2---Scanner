@@ -2,7 +2,7 @@
 
 
 // Function to process a C file character by character
-int processFile(const char *filename)
+int processFile(const char* filename)
 {
     // Open the file
     FILE* input_file = fopen(filename, "rb"); // open as binary
@@ -43,23 +43,33 @@ int processFile(const char *filename)
 
     DFA dfas[NUM_DFA];
     // TODO: initialize all DFAs
+
     char typealphabet[TYPECOLUMNS] = {TYPEALPHABET};
     initialize_dfa(&dfas[TYPEDFA], typealphabet, TYPEROWS, TYPEACCEPT);
+
     char identifieralphabet[IDENTIFIERCOLUMNS] = {IDENTIFIERALPHABET};
     initialize_dfa(&dfas[IDENTIFIERDFA], identifieralphabet, IDENTIFIERROWS, IDENTIFIERACCEPT);
+
     char keywordalphabet[KEYWORDCOLUMNS] = {KEYWORDALPHABET};
     initialize_dfa(&dfas[KEYWORDDFA], keywordalphabet, KEYWORDROWS, KEYWORDACCEPT);
+
     char numberalphabet[NUMBERCOLUMNS] = {NUMBERALPHABET};
     initialize_dfa(&dfas[NUMBERDFA], numberalphabet, NUMBERROWS, NUMBERACCEPT);
+
     char specialalphabet[SPECIALCOLUMNS] = {SPECIALALPHABET};
     initialize_dfa(&dfas[SPECIALDFA], specialalphabet, SPECIALROWS, SPECIALACCEPT);
+
     char operatoralphabet[OPERATORCOLUMNS] = {OPERATORALPHABET};
     initialize_dfa(&dfas[OPERATORDFA], operatoralphabet, OPERATORROWS, OPERATORACCEPT);
+
     char literalalphabet[LITERALCOLUMNS] = {LITERALALPHABET};
     initialize_dfa(&dfas[LITERALDFA], literalalphabet, LITERALROWS, LITERALACCEPT);
+
     // =======================================================================================
     // =======================================================================================
     // =======================================================================================
+
+
 
     int currentChar = getc(input_file); // Initializing variables to iterate through the file
     int look_ahead = getc(input_file);
@@ -102,8 +112,6 @@ int processFile(const char *filename)
                     
                     writ_buff_idx += processed_token_len; 
 
-                    curr_token_idx = 0; //reset buffer
-
                     break;
                 }
             }
@@ -113,7 +121,7 @@ int processFile(const char *filename)
                 // think about more possible exeptions
 
                 //could be space ' ' or could be an actual error
-                if(current_token[0] != ' ') {
+                if(current_token[0] != ' ' || (char)currentChar != '\n' || (char)currentChar != '\r' || currentChar == EOF) {
                     //assume error
                     char* processed_token = tokenize(ERROR_TOKEN, current_token, curr_token_idx); 
                     // ^current token index is also length
@@ -125,11 +133,13 @@ int processFile(const char *filename)
                     
                     writ_buff_idx += processed_token_len; 
 
-                    curr_token_idx = 0; //reset buffer
-                    current_token[0] = '\0'; 
 
-                } // space is not an error
+                } // space \n, \r or EOF is not an error
             }
+
+            curr_token_idx = 0; //reset buffer
+            current_token[0] = '\0'; 
+
 
             for (int i = 0; i < NUM_DFA; i++) reset_dfa(&dfas[i]);
 
@@ -189,10 +199,6 @@ int processFile(const char *filename)
                 memcpy(&writting_buffer[writ_buff_idx], processed_token, processed_token_len); 
                 free(processed_token); 
                 
-                writ_buff_idx += processed_token_len; 
-                curr_token_idx = 0; //reset buffer
-                current_token[0] = '\0'; 
-
             } // space is not an error
         }
 
@@ -230,6 +236,9 @@ int main(int argc, char *argv[])
         return MAIN_ERROR_FILE_PROCESSING;
     }
 
+
+    //TODO: remove test down? make sure everything is clear before killing the process
+
     // TESTING DFA TABLES
     int test[] = {KEYWORDTABLE};
     for (int i = 0; i < KEYWORDROWS; i++) {
@@ -238,13 +247,14 @@ int main(int argc, char *argv[])
         }
         printf("\n");
     }
+
     return SCANNER_SUCCESS;
 }
 
-char *get_file_name(const char *argv1) {
+char* get_file_name(const char* argv1) {
 
     size_t len = strlen(argv1);
-    char* output_filename = (char *)malloc(len + strlen("scn") + 1);
+    char* output_filename = (char*)malloc(len + strlen("scn") + 1);
 
     // Check if memory allocation was successful
     if (output_filename == NULL) {

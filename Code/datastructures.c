@@ -127,6 +127,10 @@ void reset_dfa(DFA* dfa) {
 
 void free_dfa(DFA* dfa) {
 
+    //int whileif = 0; 
+    //viva la revoluction!!!!
+
+    
     free(dfa->final_states); 
     free(dfa->transition_table);
 

@@ -12,8 +12,19 @@
 #define DFA_LITERALS 6
 #define ERROR_TOKEN -1
 
+#define TOKEN_TYPE "CAT_TYPE" 
+#define TOKEN_IDENTIFIER "CAT_IDENTIFIER"
+#define TOKEN_KEYWORD "CAT_KEYWORD"
+#define TOKEN_NUMBER "CAT_NUMBER"
+#define TOKEN_SPECIALCHAR "CAT_SPECIALCHAR"
+#define TOKEN_OPERAND "CAT_OPERAND"
+#define TOKEN_LITERAL "CAT_LITERAL"
+#define TOKEN_NONRECOGNIZED "CAT_NONRECOGNIZED"
+
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h> 
 
 /*
 Sorts the caracters in the array. len is the length of the array.
@@ -49,6 +60,7 @@ element is the string that was identified by the DFA.
 
 */
 char* tokenize(int identificator, char* element, int len); 
+char* generate_token(const char* element, int len, const char* token_identifier);
 
 
 #endif

@@ -12,9 +12,9 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _num_columns
     dfa->column_map = (int*)calloc(_num_columns, sizeof(int)); 
 
     dfa->num_states = _num_states; 
-    dfa->transition_table = (int*)calloc(sizeof(int), _num_columns * dfa->num_states); 
+    dfa->transition_table = (int*)calloc(sizeof(int), _num_columns * (dfa->num_states + 1)); 
     // ^ all the table is initialized to 0. this way, if a connection is not defined, the 
-    // DFA will automatically reject the string
+    // DFA will automatically reject the string. +1 is for rejecting state
 
     dfa->final_states = _final_state; 
     dfa->len_final_states = _final_state_len; 
@@ -30,33 +30,11 @@ int set_symbol_mapping(DFA* dfa, char symb, int col) {
 
     int index = get_symbol_index_BS(dfa->alphabet, dfa->len_alphabet, symb); 
 
-    if(index == -1) return -1; 
+    if(index == -1) return -1; //return error and avoid bad memory access
 
     dfa->column_map[index] = col; 
 
-
-}
-
-
-int get_symbol_index_BS(char* list, int len, char element) {
-    //binary search
-    int l = 0; //left
-    int r = len - 1; //right
-    int m; //middle
-
-    while(l <= r) {
-        m = (l + r) >> 1; // floor  l+r / 2
-        if(list[m] < element) {
-            l = m + 1; 
-        } else if (element < list[m]) {
-            r = m - 1; 
-        } else { // element == list[m]
-            return m; 
-        }
-
-    }
-
-    return -1; //unsuccessful
+    return 0; 
 
 }
 
@@ -130,7 +108,7 @@ void free_dfa(DFA* dfa) {
     //int whileif = 0; 
     //viva la revoluction!!!!
 
-    
+
     free(dfa->final_states); 
     free(dfa->transition_table);
 
@@ -140,6 +118,27 @@ void free_dfa(DFA* dfa) {
 
 
 
+int get_symbol_index_BS(char* list, int len, char element) {
+    //binary search
+    int l = 0; //left
+    int r = len - 1; //right
+    int m; //middle
+
+    while(l <= r) {
+        m = (l + r) >> 1; // floor  l+r / 2
+        if(list[m] < element) {
+            l = m + 1; 
+        } else if (element < list[m]) {
+            r = m - 1; 
+        } else { // element == list[m]
+            return m; 
+        }
+
+    }
+
+    return -1; //unsuccessful
+
+}
 
 
 

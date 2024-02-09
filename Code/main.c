@@ -252,7 +252,7 @@ char *get_file_name(char *argv1) {
         exit(EXIT_FAILURE);
     }
 
-    // Copy the input filename to the output filename, appending .scn to it
+    // Copy the input filename to the output filename, appending scn to it
     strcpy(output_filename, argv1);
     strcat(output_filename, "scn");
 

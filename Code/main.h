@@ -23,6 +23,6 @@ int processFile(const char *filename);
     based on the name of the file, creates the name of the output file
 
 */
-char* get_file_name(char *argv1);
+char* get_file_name(const char *argv1);
 
 #endif

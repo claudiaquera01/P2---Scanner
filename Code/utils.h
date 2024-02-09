@@ -13,6 +13,7 @@
 #define ERROR_TOKEN -1
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 /*
 Sorts the caracters in the array. len is the length of the array.

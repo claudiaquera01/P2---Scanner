@@ -2,7 +2,7 @@
 #include "datastructures.h"
 #include "dfatables.h"
 
-void initialize_dfa(DFA *dfa, char *_alphabet, int _num_states, int _num_columns, int* _final_state, int _final_state_len) { 
+void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _num_columns, int* _final_state, int _final_state_len) { 
 
 
     dfa->alphabet = _alphabet; 
@@ -25,6 +25,13 @@ void initialize_dfa(DFA *dfa, char *_alphabet, int _num_states, int _num_columns
     dfa->alive = true; 
 
 }
+
+int set_symbol_mapping(DFA* dfa, char symb, int col) {
+    int index = get_symbol_index_BS()
+
+
+}
+
 
 int get_symbol_index_BS(char* list, int len, char element) {
     //binary search

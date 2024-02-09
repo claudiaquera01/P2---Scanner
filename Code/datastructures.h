@@ -97,8 +97,12 @@ void initialize_dfa(DFA *dfa, char *_alphabet, int _num_states, int _num_columns
 /*
     determinates what column will symb be mapped to. If set_symbol_mapping is not called on 
     a certain symbol, it will be dafulted to column 0. 
+    col must belong to  [1, DFA.num_columns - 1]. symb must belong to DFA.alphabet
+    returns 0 on success or 1 if symb is not in the alphabet. if DFA.num_columns - 1 < col, 
+    it may cause an invalid memory acces or the DFA may not work properly. 
 */
-int set_symbol_mapping(char symb, int col); 
+int set_symbol_mapping(DFA* dfa, char symb, int col); 
+
 
 /*
 moves the dfa to the next state (according to dfa.current_state, dfa.transition_table

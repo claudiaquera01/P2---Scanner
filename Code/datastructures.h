@@ -27,7 +27,8 @@ typedef struct struct_token {
     int line_number; // For DEBUG mode
 } Token;
 
-/*
+/* 
+TODO: update definition to include mapping changes
 Represents a Deterministic Finite Automata (DFA, https://en.wikipedia.org/wiki/Deterministic_finite_automaton)
 
 alphabet is a reference to a string containing all valid symbols of the alphabet
@@ -62,15 +63,19 @@ alive is true if the automata has NOT reached the rejectiong state (0).
 */
 typedef struct struct_dfa {
 
-    char *alphabet;
+    char* alphabet;
     int len_alphabet;
+    int* column_map; 
+
+    int num_columns; 
 
     int num_states;
-    int *transition_table;
+    int* transition_table;
     int initial_state;
     int current_state;
 
-    int final_state;
+    int* final_states; 
+    int* len_final_states; 
 
     bool alive;
 
@@ -86,7 +91,14 @@ Also note that the alphabet must be constant during the live of the dfa and must
 Note: the transition table is initialized to values of 0 (go to rejecting state),
 the correct values must be set later. see set_dfa_transition_table_value()
 */
-void initialize_dfa(DFA *dfa, char *_alphabet, int _num_states, int _final_state);
+void initialize_dfa(DFA *dfa, char *_alphabet, int _num_states, int _num_columns, int* _final_state, int _final_state_len);
+
+
+/*
+    determinates what column will symb be mapped to. If set_symbol_mapping is not called on 
+    a certain symbol, it will be dafulted to column 0. 
+*/
+int set_symbol_mapping(char symb, int col); 
 
 /*
 moves the dfa to the next state (according to dfa.current_state, dfa.transition_table

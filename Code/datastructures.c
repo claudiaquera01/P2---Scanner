@@ -2,17 +2,22 @@
 #include "datastructures.h"
 #include "dfatables.h"
 
-void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _final_state) {
+void initialize_dfa(DFA *dfa, char *_alphabet, int _num_states, int _num_columns, int* _final_state, int _final_state_len) { 
+
 
     dfa->alphabet = _alphabet; 
     dfa->len_alphabet = strlen(dfa->alphabet); 
 
+    dfa->num_columns = _num_columns; 
+    dfa->column_map = (int*)calloc(_num_columns, sizeof(int)); 
+
     dfa->num_states = _num_states; 
-    dfa->transition_table = (int*)calloc(sizeof(int), dfa->len_alphabet * dfa->num_states); 
+    dfa->transition_table = (int*)calloc(sizeof(int), _num_columns * dfa->num_states); 
     // ^ all the table is initialized to 0. this way, if a connection is not defined, the 
     // DFA will automatically reject the string
 
-    dfa->final_state = _final_state;
+    dfa->final_states = _final_state; 
+    dfa->len_final_states = _final_state_len; 
 
     dfa->initial_state = INITIALSTATE; // default values
     dfa->current_state = INITIALSTATE;

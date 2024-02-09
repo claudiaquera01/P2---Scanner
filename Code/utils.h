@@ -2,7 +2,9 @@
 #define UTILS_HEADER
 
 #define NUM_DFA 7
+// total number of dfas
 
+// identifier for dfas
 #define DFA_TYPES 0
 #define DFA_IDENTIFIER 1
 #define DFA_KEYWORDS 2
@@ -10,7 +12,9 @@
 #define DFA_SPECIAL_CHAR 4
 #define DFA_OPERATORS 5
 #define DFA_LITERALS 6
+
 #define ERROR_TOKEN -1
+
 
 #define TOKEN_TYPE "CAT_TYPE" 
 #define TOKEN_IDENTIFIER "CAT_IDENTIFIER"

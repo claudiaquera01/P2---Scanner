@@ -27,7 +27,12 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _num_columns
 }
 
 int set_symbol_mapping(DFA* dfa, char symb, int col) {
-    int index = get_symbol_index_BS()
+
+    int index = get_symbol_index_BS(dfa->alphabet, dfa->len_alphabet, symb); 
+
+    if(index == -1) return -1; 
+
+    dfa->column_map[index] = col; 
 
 
 }
@@ -55,41 +60,39 @@ int get_symbol_index_BS(char* list, int len, char element) {
 
 }
 
-int get_dfa_transition_table_value(DFA* dfa, int curr_state, char symbol) {
+int get_dfa_transition_table_value(DFA* dfa, int curr_state, int column) {
 
     if(dfa->num_states < curr_state || curr_state < 0) return -1; 
     //make sure that the state is valid or we risk a bad memory access
 
-    int char_index = get_symbol_index_BS(dfa->alphabet, dfa->len_alphabet, symbol); // get column of the transition table
-    if(char_index < 0) return -2; //if not in alphabet return error
-
-    return dfa->transition_table[curr_state * dfa->len_alphabet + char_index]; 
+    return dfa->transition_table[curr_state * dfa->len_alphabet + column]; 
 
 }
 
-int set_dfa_transition_table_value(DFA* dfa, int state, char symbol, int new_state) {
+int set_dfa_transition_table_value(DFA* dfa, int state, int column, int new_state) {
 
     if(dfa->num_states < state || state < 0) return -1; 
-    if(dfa->num_states < new_state || new_state < 0) return -3; 
+    if(dfa->num_states < new_state || new_state < 0) return -2; 
     //make sure that the state is valid or we risk a bad memory access
 
-    int char_index = get_symbol_index_BS(dfa->alphabet, dfa->len_alphabet, symbol); // get column of the transition table
-    if(char_index < 0) return -2; //if not in alphabet return error
-
-    dfa->transition_table[state * dfa->len_alphabet + char_index] = new_state; 
+    dfa->transition_table[state * dfa->len_alphabet + column] = new_state; 
     return 0; //success
 
 }
 
 void advance_dfa(DFA* dfa, char symbol) {
+
     int char_index = get_symbol_index_BS(dfa->alphabet, dfa->len_alphabet, symbol); // get column of the transition table
     if(char_index == -1) { //reject
+        //symbol is not in the alphabet
         dfa->current_state = REJECTSTATE;
         dfa->alive = false; 
         return; 
-    }
+    } 
+
+    int column_index = dfa->column_map[char_index]; 
     
-    int new_state = dfa->transition_table[dfa->current_state * dfa->len_alphabet + char_index]; 
+    int new_state = dfa->transition_table[dfa->current_state * dfa->len_alphabet + column_index]; 
     // ^ compute new state
     dfa->current_state = new_state; //go to new state
 
@@ -103,11 +106,15 @@ void advance_dfa(DFA* dfa, char symbol) {
 
 bool finalize_dfa(DFA* dfa) {
 
-    if(!dfa->alive) return false; 
+    if(!dfa->alive) return false; //fast return
 
     int final_state = dfa->current_state; 
-    if(final_state == dfa->final_state) {
-        return true;
+
+    for(int i = 0; i < dfa->len_final_states; i++) {
+
+        if(final_state == dfa->final_states[i]) {
+            return true; 
+        }
     }
 
     return false; 
@@ -120,6 +127,7 @@ void reset_dfa(DFA* dfa) {
 
 void free_dfa(DFA* dfa) {
 
+    free(dfa->final_states); 
     free(dfa->transition_table);
 
 }

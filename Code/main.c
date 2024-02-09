@@ -241,14 +241,14 @@ int main(int argc, char *argv[])
     return SCANNER_SUCCESS;
 }
 
-char *get_file_name(char *argv1) {
+char *get_file_name(const char *argv1) {
 
     size_t len = strlen(argv1);
     char* output_filename = (char *)malloc(len + strlen("scn") + 1);
 
     // Check if memory allocation was successful
     if (output_filename == NULL) {
-        fprintf(stderr, "Error: Memory allocation failed\n");
+        fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         exit(EXIT_FAILURE);
     }
 

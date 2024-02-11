@@ -37,6 +37,7 @@
 #define IDENTIFIERROWS 3
 // Defining accepting state for identifier dfa
 #define IDENTIFIERACCEPT 2
+#define IDENTIFIERACCEPTLEN 1
 // Define mapping of alphabet to columns of identifier table (Number, Lowercase, Uppercase, other)
 #define IDENTIFIERMAPPING   3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,3,3,3, \
                             2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3, \
@@ -50,6 +51,7 @@
 #define KEYWORDROWS 19
 // Defining accepting state for keyword dfa
 #define KEYWORDACCEPT 18
+#define KEYWORDACCEPTLEN 1
 // Defining mapping of alphabet to columns of keyword table (i,f,e,l,s,w,h,m,a,n,r,t,u,other)
 #define KEYWORDMAPPING 13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, \
                         13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, \
@@ -79,6 +81,7 @@
 #define NUMBERROWS  3
 // Defining accepting state for number dfa
 #define NUMBERACCEPT 2
+#define NUMBERACCEPTLEN 1
 // Defining mapping of alphabet to columns of number table (0,1,2,3,4,5,6,7,8,9,other)
 #define NUMBERMAPPING 1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
@@ -92,32 +95,35 @@
 #define SPECIALROWS 3
 // Defining accepting state for Special characters dfa
 #define SPECIALACCEPT 2
+#define SPECIALACCEPTLEN 1
 // Defining mapping of alphabet to columns of special characters table(Special, other)
 #define SPECIALMAPPING 1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0
 #define SPECIALTABLE 0, 0, \
                         2, 0, \
-                        2, 0
+                        0, 0
 
 
 #define OPERATORCOLUMNS 2
 #define OPERATORROWS 3
 // Defining accepting state for operator dfa
 #define OPERATORACCEPT 2
+#define OPERATORACCEPTLEN 1
 // Defining mapping of alphabet to columns of operator table (Operator, other)
 #define OPERATORMAPPING 1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 #define OPERATORTABLE 0, 0, \
                         2, 0, \
-                        2, 0
+                        0, 0
 
 
 #define LITERALCOLUMNS 2
 #define LITERALROWS 4
 // Defining accepting state for literals dfa
 #define LITERALACCEPT 3
+#define LITERALACCEPTLEN 1
 // Defining mapping of alphabet to columns of literal table (", other)
 #define LITERALMAPPING 0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \

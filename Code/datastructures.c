@@ -26,6 +26,7 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _num_columns
 
 }
 
+
 int set_symbol_mapping(DFA* dfa, char symb, int col) {
 
     int index = get_symbol_index_BS(dfa->alphabet, dfa->len_alphabet, symb); 
@@ -38,6 +39,15 @@ int set_symbol_mapping(DFA* dfa, char symb, int col) {
 
 }
 
+
+int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* mapping_vector){
+    // Copy documentation mapping into dfa column mapping
+    for(int i = 0; i<alphabet_length; i++){
+        set_symbol_mapping(dfa, _alphabet[i], mapping_vector[i]);
+    }
+    return 0;
+}
+
 int get_dfa_transition_table_value(DFA* dfa, int curr_state, int column) {
 
     if(dfa->num_states < curr_state || curr_state < 0) return -1; 
@@ -46,6 +56,7 @@ int get_dfa_transition_table_value(DFA* dfa, int curr_state, int column) {
     return dfa->transition_table[curr_state * dfa->len_alphabet + column]; 
 
 }
+
 
 int set_dfa_transition_table_value(DFA* dfa, int state, int column, int new_state) {
 
@@ -57,6 +68,17 @@ int set_dfa_transition_table_value(DFA* dfa, int state, int column, int new_stat
     return 0; //success
 
 }
+
+int fill_transition_table(DFA* dfa, int* doc_table) {
+    // Copy documentation transition table into dfa transition table
+    for (int i = 0; i < dfa->num_states; i++) {
+        for (int j = 0; j < dfa->num_columns; j++) {
+            set_dfa_transition_table_value(dfa, i, j, doc_table[i * dfa->num_columns + j]);
+        }
+    }
+    return 0;
+}
+
 
 void advance_dfa(DFA* dfa, char symbol) {
 
@@ -82,6 +104,7 @@ void advance_dfa(DFA* dfa, char symbol) {
 
 }
 
+
 bool finalize_dfa(DFA* dfa) {
 
     if(!dfa->alive) return false; //fast return
@@ -98,10 +121,12 @@ bool finalize_dfa(DFA* dfa) {
     return false; 
 }
 
+
 void reset_dfa(DFA* dfa) {
     dfa->current_state = INITIALSTATE;
     dfa->alive = true; 
 }
+
 
 void free_dfa(DFA* dfa) {
 
@@ -111,11 +136,8 @@ void free_dfa(DFA* dfa) {
 
     free(dfa->final_states); 
     free(dfa->transition_table);
-
+    free(dfa->column_map);
 }
-
-
-
 
 
 int get_symbol_index_BS(char* list, int len, char element) {

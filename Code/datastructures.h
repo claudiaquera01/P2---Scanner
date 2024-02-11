@@ -108,7 +108,14 @@ void initialize_dfa(DFA* dfa, char *_alphabet, int _num_states, int _num_columns
     returns 0 on success or 1 if symb is not in the alphabet. if DFA.num_columns - 1 < col, 
     it may cause an invalid memory acces or the DFA may not work properly. 
 */
-int set_symbol_mapping(DFA* dfa, char symb, int col); 
+int set_symbol_mapping(DFA* dfa, char symb, int col);
+
+
+/*
+  Fills the column mapping of the dfa according to the documentation mapping
+*/
+int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* mapping_vector);
+
 
 /*
     moves the dfa to the next state (according to dfa.current_state, dfa.transition_table
@@ -147,6 +154,12 @@ int get_dfa_transition_table_value(DFA* dfa, int curr_state, int column);
         -2: invalid state: new_state is neagtive or greater than dfa.num_states
 */
 int set_dfa_transition_table_value(DFA* dfa, int state, int column, int new_state);
+
+/*
+ Fills the transition table according to documentation table
+*/
+int fill_transition_table(DFA* dfa, int* doc_table);
+
 
 /*
     frees all the contents inside the dfa. does NOT free alphabet nor the dfa itself .

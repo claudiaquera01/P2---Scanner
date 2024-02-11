@@ -1,7 +1,7 @@
 #include "debug.h"
 
 // Function to output tokens in debug mode
-oid output_tokens_debug(FILE* output_file, Token* tokens, int num_tokens, int debug_mode) {
+void output_tokens_debug(FILE* output_file, Token* tokens, int num_tokens, int debug_mode) {
     // Write tokens in the output version
     int num;
     num=0;

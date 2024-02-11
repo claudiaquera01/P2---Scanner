@@ -15,6 +15,7 @@
 #define TYPEROWS 11
 // Defining accepting state for type dfa
 #define TYPEACCEPT 10
+#define TYPEACCEPTLEN 1
 // Defining mapping of alphabet to columns of type table (i,n,t,c,h,a,r,v,o,d,other)
 #define TYPEMAPPING 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10, \
                     10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10, \

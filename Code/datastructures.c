@@ -9,7 +9,7 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _num_columns
     dfa->len_alphabet = strlen(dfa->alphabet); 
 
     dfa->num_columns = _num_columns; 
-    dfa->column_map = (int*)calloc(_num_columns, sizeof(int)); 
+    dfa->column_map = (int*)calloc(dfa->len_alphabet, sizeof(int));
 
     dfa->num_states = _num_states; 
     dfa->transition_table = (int*)calloc(sizeof(int), _num_columns * (dfa->num_states + 1)); 
@@ -53,7 +53,7 @@ int set_dfa_transition_table_value(DFA* dfa, int state, int column, int new_stat
     if(dfa->num_states < new_state || new_state < 0) return -2; 
     //make sure that the state is valid or we risk a bad memory access
 
-    dfa->transition_table[state * dfa->len_alphabet + column] = new_state; 
+    dfa->transition_table[state * dfa->num_columns + column] = new_state;
     return 0; //success
 
 }
@@ -68,9 +68,9 @@ void advance_dfa(DFA* dfa, char symbol) {
         return; 
     } 
 
-    int column_index = dfa->column_map[char_index]; 
+    int column_index = dfa->column_map[char_index];
     
-    int new_state = dfa->transition_table[dfa->current_state * dfa->len_alphabet + column_index]; 
+    int new_state = dfa->transition_table[dfa->current_state * dfa->num_columns + column_index];
     // ^ compute new state
     dfa->current_state = new_state; //go to new state
 

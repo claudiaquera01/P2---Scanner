@@ -78,7 +78,7 @@ typedef struct struct_dfa {
     int current_state;
 
     int* final_states; 
-    int* len_final_states; 
+    int len_final_states;
 
     bool alive;
 

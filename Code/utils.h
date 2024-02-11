@@ -25,6 +25,24 @@
 #define TOKEN_LITERAL "CAT_LITERAL"
 #define TOKEN_NONRECOGNIZED "CAT_NONRECOGNIZED"
 
+// Counting operations //////////
+
+int count=0;
+#define IF_COST 1
+#define FPRINTF_COST 50
+#define WRITE_MEMORY_COST 50
+#define PRINTF_COST 1
+#define LECTURE_MEMORY_COST 50
+#define RETURN_COST 1
+#define KEEP_MEMORY 10
+#define STRING_LEN_COST 5
+#define CLOSE_FILE_COST 20
+#define ARITHMETIC_COST 1
+#define MEMORY_COPY_COST 20
+#define FREE_MEMORY_COST 20
+#define PRE_FUNC_COST 10
+
+// /////////////////////////////
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>

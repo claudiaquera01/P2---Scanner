@@ -80,7 +80,25 @@ char* tokenize(int identificator, char* element, int len) {
     return token;
 }
 
+/** 
+ * Helper function to indicate if a certain character is a delimiter or not.
+ * 
+ * @param c The character we want to know if it is an delimiter
+ * @return True if c is a delimiter or false otherwise.
+ */
 
+bool is_delimiter(char c) {
+    // The list of possible delimiters
+    char delimiters[] = {' ', '\t', '\n', '\r', '\0'}; 
 
+    // We iterate through all the delimiters to check if c matches any of them
+    for (int i = 0; i < sizeof(delimiters) / sizeof(delimiters[0]); i++) {
 
+        if (c == delimiters[i]) {
+            return true; // c is a delimiter
+        }
 
+    }
+
+    return false; // c is not a delimiter
+}

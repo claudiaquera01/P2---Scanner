@@ -147,7 +147,6 @@ int processFile(const char* filename)
     // Read the file character by character
     while (currentChar != EOF) {
 
-
         current_token[curr_token_idx] = (char)currentChar; 
         curr_token_idx++; 
 
@@ -207,11 +206,9 @@ int processFile(const char* filename)
             curr_token_idx = 0; //reset buffer
             current_token[0] = '\0'; 
 
-
             for (int i = 0; i < NUM_DFA; i++) reset_dfa(&dfas[i]);
 
         }
-
 
         if (BUFFER_SIZE * BUFFER_THRESHOLD < writ_buff_idx) { 
             /*the writting buffer is starting to get full. empty it*/
@@ -225,7 +222,7 @@ int processFile(const char* filename)
         currentChar = look_ahead; // update chars
         look_ahead = getc(input_file);
         is_current_char_delimiter = is_look_ahead_delimiter;
-        is_look_ahead_delimiter = is_delimiter(look_ahead);
+        is_look_ahead_delimiter = is_delimiter((char)look_ahead);
     }
 
 
@@ -249,7 +246,6 @@ int processFile(const char* filename)
                 writ_buff_idx += processed_token_len; 
 
                 curr_token_idx = 0; //reset buffer
-
 
                 break;
             }

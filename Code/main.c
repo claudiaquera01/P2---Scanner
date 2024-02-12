@@ -169,7 +169,7 @@ int processFile(const char* filename)
                 this way the contents "x * y" will be parsed as "x| |*| |y"
             */
 
-            current_token[curr_token_idx + 1] = '\0'; 
+            current_token[curr_token_idx] = '\0'; 
 
 
             bool success = false;
@@ -287,7 +287,7 @@ int processFile(const char* filename)
         printf("parsed text added: %s\n\n", writting_buffer); 
 
         // Write scanner output into output file
-        fwrite(writting_buffer, sizeof(char), writ_buff_idx + 1, output_file);
+        fwrite(writting_buffer, sizeof(char), writ_buff_idx, output_file);
 
     }
 
@@ -327,13 +327,18 @@ int main(int argc, char *argv[])
     int process_return = processFile(argv[1]);
     // Handle error when  processing target file
     if (process_return != 0) {
-        COUNTFUNC(IF_COST)
+        //COUNTFUNC(IF_COST) // moved down
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_FILE_PROCESSING);
-        COUNTFUNC(FPRINTF_COST)
-        COUNTFUNC(RETURN_COST)
+        //COUNTFUNC(FPRINTF_COST)
+        //COUNTFUNC(RETURN_COST)
+
+        COUNTFUNC(FPRINTF_COST + RETURN_COST)
+
         return MAIN_ERROR_FILE_PROCESSING;
     }
-    COUNTFUNC(RETURN_COST)
+    COUNTFUNC(IF_COST + PRINTF_COST + RETURN_COST); 
+
+    printf("\n\n\tTotal cost of execution: %d\n\n", count_operations); 
     return SCANNER_SUCCESS;
 }
 

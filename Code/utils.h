@@ -43,6 +43,7 @@
 
 extern int count_operations;
 #define COUNTFUNC(cost) (count_operations+=cost)
+
 #define IF_COST 5
 //^if an arithmetic operation is 1, an if is more expensive than 1 (~5, for example)
 // note that the "ifs" at loops are optimized and are not as costly
@@ -58,11 +59,8 @@ extern int count_operations;
 // 10 000 is more accurate than 50, although you may want to throw 1 or 2 more 0s
 
 #define RETURN_COST 1
-#define KEEP_MEMORY 10
-//^what is this
-#define STRING_LEN_COST 5
-//^the performance of strlen depends on the length of the string. use the result of strlen as the cost
 
+#define OPEN_FILE_COST 20
 #define CLOSE_FILE_COST 20
 #define ARITHMETIC_COST 1
 // ARITHMETIC_COST < IF_COST
@@ -72,8 +70,6 @@ extern int count_operations;
 
 #define FREE_MEMORY_COST 20
 
-#define PRE_FUNC_COST 10
-// what is exacly this?
 
 // /////////////////////////////
 

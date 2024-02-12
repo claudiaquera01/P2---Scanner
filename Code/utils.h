@@ -141,6 +141,12 @@ char* generate_token(const char* element, int len, const char* token_identifier)
 */
 char* get_file_name(const char* argv1); 
 
+/**
+ * Returns true if a token should be ignored for being a space, eol, tab, etc.
+*/
+bool mustIgnoreElement(const char* element);
+
+
 
 
 

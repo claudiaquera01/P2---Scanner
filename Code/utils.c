@@ -19,14 +19,23 @@ void sort_chars(char* array, int len) {
 
 }
 
+bool mustIgnoreElement(const char* element){
+    return (strcmp(element, " ") == 0 || 
+            strcmp(element, "\n") == 0 || 
+            strcmp(element, "\t") == 0 || 
+            strcmp(element, "\r") == 0 || 
+            strcmp(element, "\0") == 0);
+}
+
 char* generate_token(const char* element, int len, const char* token_identifier) {
     int total_length = len + strlen(token_identifier) + 4; // 4 for "<>, " and '\0'
     // Allocate memory for the token string
     char* token = (char*)malloc(sizeof(char) * (total_length));
 
-    if(strcmp(token_identifier, TOKEN_NONRECOGNIZED) == 0 && (strcmp(element, " ") == 0 || strcmp(element, "\n") == 0 || strcmp(element, "\t") == 0)) {
+    if (mustIgnoreElement(element)) {
         sprintf(token, "");
-    }else {
+
+    } else {
         // Construct the token string
         sprintf(token, "<%s, %s>", element, token_identifier);
     }

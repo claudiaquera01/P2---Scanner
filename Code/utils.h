@@ -41,7 +41,7 @@
 
 // Counting operations //////////
 
-int count = 0;
+extern int count_operations;
 
 #define IF_COST 5
 //^if an arithmetic operation is 1, an if is more expensive than 1 (~5, for example)

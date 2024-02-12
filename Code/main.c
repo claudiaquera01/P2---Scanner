@@ -286,12 +286,12 @@ int main(int argc, char *argv[])
 {
     // Check if a file name is provided as a command-line argument
     if (argc != 2) {
-        COUNTFUNC(IF_COST);
+        COUNTFUNC(IF_COST)
         fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
-        COUNTFUNC(FPRINTF_COST);
+        COUNTFUNC(FPRINTF_COST)
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MISSING_FILENAME);
-        COUNTFUNC(FPRINTF_COST);
-        COUNTFUNC(RETURN_COST);
+        COUNTFUNC(FPRINTF_COST)
+        COUNTFUNC(RETURN_COST)
         return MAIN_ERROR_MISSING_FILENAME;
     }
 
@@ -299,12 +299,12 @@ int main(int argc, char *argv[])
     int process_return = processFile(argv[1]);
     // Handle error when  processing target file
     if (process_return != 0) {
-        COUNTFUNC(IF_COST);
+        COUNTFUNC(IF_COST)
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_FILE_PROCESSING);
-        COUNTFUNC(FPRINTF_COST);
-        COUNTFUNC(RETURN_COST);
+        COUNTFUNC(FPRINTF_COST)
+        COUNTFUNC(RETURN_COST)
         return MAIN_ERROR_FILE_PROCESSING;
     }
-    COUNTFUNC(RETURN_COST);
+    COUNTFUNC(RETURN_COST)
     return SCANNER_SUCCESS;
 }

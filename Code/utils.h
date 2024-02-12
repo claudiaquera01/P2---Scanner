@@ -41,8 +41,13 @@
 
 // Counting operations //////////
 
+#define COUNTING_OPERATIONS true
+// ^true or false depending if we are counting operations or not
+
 extern int count_operations;
-#define COUNTFUNC(cost) (count_operations+=cost)
+#define COUNTFUNC(cost)  if(COUNTING_OPERATIONS) count_operations += cost; 
+//
+
 
 #define IF_COST 5
 //^if an arithmetic operation is 1, an if is more expensive than 1 (~5, for example)

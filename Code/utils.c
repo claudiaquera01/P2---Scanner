@@ -67,8 +67,6 @@ char* tokenize(int identificator, char* element, int len) {
             token = generate_token(element, len, TOKEN_LITERAL);
             break;
         default:
-            //if(strcmp(element, " ") == 0 || strcmp(element, "\n") == 0 || strcmp(element, "\t") == 0) {
-
             printf("Token |%s| UNRECOGNIZED \n", element); 
             token = generate_token(element, len, TOKEN_NONRECOGNIZED); 
     }

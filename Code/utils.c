@@ -1,7 +1,7 @@
 #include "utils.h"
 
 int count_operations=0;
-//char delimiters[] = {' ', '\t', '\n', '\r', '\0', '+', '*', '=', '>', '(', ')', ';', '{', '}', '[', ']', ','}; 
+char delimiters[] = {' ', '\t', '\n', '\r', '\0', '+', '*', '=', '>', '(', ')', ';', '{', '}', '[', ']', ','}; 
 
 void sort_chars(char* array, int len) {
     // the trustworthy bubblesort
@@ -33,7 +33,7 @@ char* generate_token(const char* element, int len, const char* token_identifier)
     char* token = (char*)malloc(sizeof(char) * (total_length));
 
     if (mustIgnoreElement(element)) {
-        sprintf(token, "");
+        sprintf(token, " ");
 
     } else {
         // Construct the token string
@@ -85,7 +85,7 @@ char* tokenize(int identificator, char* element, int len) {
 
 bool is_delimiter(char c) {
     // The list of possible delimiters
-    char delimiters[] = {' ', '\t', '\n', '\r', '\0', '+', '*', '=', '>', '(', ')', ';', '{', '}', '[', ']', ','}; 
+    //char delimiters[] = {' ', '\t', '\n', '\r', '\0', '+', '*', '=', '>', '(', ')', ';', '{', '}', '[', ']', ','}; 
 
     int delimiter_len = sizeof(delimiters) / sizeof(char); 
     // We iterate through all the delimiters to check if c matches any of them

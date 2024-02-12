@@ -252,7 +252,7 @@ int processFile(const char* filename)
         }
 
         if (!success) {
-            if(current_token[0] != ' ') {
+            if(current_token[0] != ' ' || (char)currentChar != '\n' || (char)currentChar != '\r' ) {
 
                 char* processed_token = tokenize(ERROR_TOKEN, current_token, curr_token_idx); 
                 // ^current token index is also length
@@ -301,20 +301,4 @@ int main(int argc, char *argv[])
     return SCANNER_SUCCESS;
 }
 
-char* get_file_name(const char* argv1) {
 
-    size_t len = strlen(argv1);
-    char* output_filename = (char*)malloc(len + strlen("scn") + 1);
-
-    // Check if memory allocation was successful
-    if (output_filename == NULL) {
-        fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
-        exit(EXIT_FAILURE);
-    }
-
-    // Copy the input filename to the output filename, appending scn to it
-    strcpy(output_filename, argv1);
-    strcat(output_filename, "scn");
-
-    return output_filename;
-}

@@ -1,6 +1,20 @@
 #ifndef UTILS_HEADER
 #define UTILS_HEADER
 
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h> 
+
+#include "errors.h"
+
+
+
+
+
+
+
+
 #define NUM_DFA 7
 // total number of dfas
 
@@ -43,12 +57,9 @@ int count=0;
 #define PRE_FUNC_COST 10
 
 // /////////////////////////////
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h> 
 
-/*
+
+/**
 Sorts the caracters in the array. len is the length of the array.
 
 Note that array needs to be mutable, therefore using the following will not work:
@@ -61,27 +72,81 @@ To easly fix it, substitute by the following.
     char my_text[] = "cute reflection";
     sort_chars(my_text, strlen(my_text));
 
-*/
+
+ * Sorts characters in an array using bubble sort algorithm.
+ * 
+ * @param array The array of characters to be sorted
+ * @param len The length of the array
+ */
 void sort_chars(char *array, int len);
 
-
-//Returns true if c is a delimiter or false if it is not
-
+/** 
+ * Helper function to indicate if a certain character is a delimiter or not.
+ * 
+ * @param c The character we want to know if it is an delimiter
+ * @return True if c is a delimiter or false otherwise.
+*/
 bool is_delimiter(char c); 
 
 
-/*
-returns "<element, IDENTIFIACOR_TAG>\0"  //includes the /0
-identificator is the id of the dfa (i.e. DFA_IDENTIFIER, DFA_OPERATORS, ERROR_TOKEN...) 
-(look at the top of utils.h). does NOT hold ownership of element. 
+/**
+    returns "<element, IDENTIFIACOR_TAG>\0"  //includes the /0
+    identificator is the id of the dfa (i.e. DFA_IDENTIFIER, DFA_OPERATORS, ERROR_TOKEN...) 
+    (look at the top of utils.h). does NOT hold ownership of element. 
 
-len is the length of element. 
+    len is the length of element. 
 
-element is the string that was identified by the DFA. 
+    element is the string that was identified by the DFA. 
 
-*/
+ * Tokenizes an element based on its identifier and length
+ * 
+ * @param identificator The identifier of the element
+ * @param element The element to be tokenized
+ * @param len The length of the element
+ * @return The tokenized string
+ */
 char* tokenize(int identificator, char* element, int len); 
+
+
+
+/** 
+ * Helper function to generate token based on identifier and element
+ * 
+ * @param element The element for which the token is being generated
+ * @param len The length of the element
+ * @param token_identifier The identifier tag for the token
+ * @return The generated token string
+ */
 char* generate_token(const char* element, int len, const char* token_identifier);
+
+
+
+
+/*
+    based on the name of the file, creates the name of the output file
+*/
+char* get_file_name(const char *argv1); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #endif

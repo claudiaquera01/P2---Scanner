@@ -40,12 +40,22 @@ int set_symbol_mapping(DFA* dfa, char symb, int col) {
 }
 
 
-int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* mapping_vector){
+
+/*TODO: alphabet length is already on dfa. Its not needed. We should get the lenght of 
+the mapping vector and check that it has the same length as the alphabet length. */
+int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* mapping_vector) {
+
+    int mapping_vector_len = -1; //TODO: put this as a perameter
+    if(alphabet_length < mapping_vector_len) return 2; //crash for bad memory access
+
     // Copy documentation mapping into dfa column mapping
-    for(int i = 0; i<alphabet_length; i++){
+    int alphabet_len = dfa->len_alphabet; 
+    for(int i = 0; i < alphabet_len; i++){
         set_symbol_mapping(dfa, _alphabet[i], mapping_vector[i]);
     }
-    return 0;
+
+    return (int)(alphabet_length != mapping_vector_len); 
+    //^returns 0 if the lengths are exact or 1 if not (some mapping vector positions are left unchaged). 
 }
 
 int get_dfa_transition_table_value(DFA* dfa, int curr_state, int column) {

@@ -17,12 +17,12 @@
 #define BUFFER_THRESHOLD 0.75
 // when buffer is BUFFER_THRESHOLD, write to file
 
-int processFile(const char *filename);
 
 /*
-    based on the name of the file, creates the name of the output file
-
+    TODO: do documentation
 */
-char* get_file_name(const char *argv1);
+int processFile(const char* filename);
+
+
 
 #endif

@@ -1,11 +1,6 @@
 #include "utils.h"
 
-/**
- * Sorts characters in an array using bubble sort algorithm.
- * 
- * @param array The array of characters to be sorted
- * @param len The length of the array
- */
+
 void sort_chars(char* array, int len) {
     // the trustworthy bubblesort
     char temp;
@@ -22,14 +17,7 @@ void sort_chars(char* array, int len) {
 
 }
 
-/** 
- * Helper function to generate token based on identifier and element
- * 
- * @param element The element for which the token is being generated
- * @param len The length of the element
- * @param token_identifier The identifier tag for the token
- * @return The generated token string
- */
+
 char* generate_token(const char* element, int len, const char* token_identifier) {
     int total_length = len + strlen(token_identifier) + 4; // 4 for "<>, " and '\0'
     // Allocate memory for the token string
@@ -39,14 +27,7 @@ char* generate_token(const char* element, int len, const char* token_identifier)
     return token;
 }
 
-/** 
- * Tokenizes an element based on its identifier and length
- * 
- * @param identificator The identifier of the element
- * @param element The element to be tokenized
- * @param len The length of the element
- * @return The tokenized string
- */
+
 char* tokenize(int identificator, char* element, int len) {
     char* token = NULL;
 
@@ -80,19 +61,14 @@ char* tokenize(int identificator, char* element, int len) {
     return token;
 }
 
-/** 
- * Helper function to indicate if a certain character is a delimiter or not.
- * 
- * @param c The character we want to know if it is an delimiter
- * @return True if c is a delimiter or false otherwise.
- */
 
 bool is_delimiter(char c) {
     // The list of possible delimiters
-    char delimiters[] = {' ', '\t', '\n', '\r', '\0'}; 
+    char delimiters[] = {' ', '\t', '\n', '\r', '\0'}; //TODO: we should define the delimiters as a constant in the appropiate place 
 
+    int delimiter_len = sizeof(delimiters) / sizeof(char); 
     // We iterate through all the delimiters to check if c matches any of them
-    for (int i = 0; i < sizeof(delimiters) / sizeof(delimiters[0]); i++) {
+    for (int i = 0; i < delimiter_len; i++) {
 
         if (c == delimiters[i]) {
             return true; // c is a delimiter
@@ -101,4 +77,24 @@ bool is_delimiter(char c) {
     }
 
     return false; // c is not a delimiter
+}
+
+
+
+char* get_file_name(const char* argv1) {
+
+    size_t len = strlen(argv1);
+    char* output_filename = (char*)malloc(len + strlen("scn") + 1);
+
+    // Check if memory allocation was successful
+    if (output_filename == NULL) {
+        fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
+        exit(EXIT_FAILURE);
+    }
+
+    // Copy the input filename to the output filename, appending scn to it
+    strcpy(output_filename, argv1);
+    strcat(output_filename, "scn");
+
+    return output_filename;
 }

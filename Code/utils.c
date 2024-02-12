@@ -23,8 +23,13 @@ char* generate_token(const char* element, int len, const char* token_identifier)
     int total_length = len + strlen(token_identifier) + 4; // 4 for "<>, " and '\0'
     // Allocate memory for the token string
     char* token = (char*)malloc(sizeof(char) * (total_length));
-    // Construct the token string
-    sprintf(token, "<%s, %s>", element, token_identifier);
+
+    if(strcmp(token_identifier, TOKEN_NONRECOGNIZED) == 0 && (strcmp(element, " ") == 0 || strcmp(element, "\n") == 0 || strcmp(element, "\t") == 0)) {
+        sprintf(token, "");
+    }else {
+        // Construct the token string
+        sprintf(token, "<%s, %s>", element, token_identifier);
+    }
     return token;
 }
 
@@ -62,7 +67,9 @@ char* tokenize(int identificator, char* element, int len) {
             token = generate_token(element, len, TOKEN_LITERAL);
             break;
         default:
-            printf("Token |%s| UNREGOGNIZED \n", element); 
+            //if(strcmp(element, " ") == 0 || strcmp(element, "\n") == 0 || strcmp(element, "\t") == 0) {
+
+            printf("Token |%s| UNRECOGNIZED \n", element); 
             token = generate_token(element, len, TOKEN_NONRECOGNIZED); 
     }
 

@@ -9,6 +9,7 @@ int processFile(const char* filename)
     // Handle error opening target file
     if (input_file == NULL) {
         fprintf(stderr, "Error opening file: %s\n", filename);
+        COUNTFUNC(FPRINTF_COST+RETURN_COST);
         return MAIN_ERROR_CANT_READ_FILE; // TODO: cahnge for define error
     }
 
@@ -17,8 +18,10 @@ int processFile(const char* filename)
 
     // Creating output file
     FILE* output_file = fopen(output_filename, "wb");
+    COUNTFUNC(2*OPEN_FILE_COST+IF_COST+ARITHMETIC_COST);
     if (output_file == NULL){ // Handle error when creating output file
         fprintf(stderr, "Error creating output file: %s\n", output_filename);
+        COUNTFUNC(FPRINTF_COST+RETURN_COST);
         return MAIN_ERROR_FILE_PROCESSING;
     }
 
@@ -26,9 +29,11 @@ int processFile(const char* filename)
 
     // Allocate memory for the result buffer
     char* writting_buffer = (char*)malloc(sizeof(char) * BUFFER_SIZE);
+    COUNTFUNC(IF_COST+ARITHMETIC_COST);
     if (writting_buffer == NULL) { // Handle error when allocating the buffer
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
+        COUNTFUNC(FPRINTF_COST+CLOSE_FILE_COST+RETURN_COST);
         return PREPROCESS_ERROR_MEMORY_ALLOCATION; // TODO: cahnge for define error
     }
 

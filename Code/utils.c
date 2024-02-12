@@ -1,6 +1,6 @@
 #include "utils.h"
 
-
+int count_operations=0;
 
 
 void sort_chars(char* array, int len) {

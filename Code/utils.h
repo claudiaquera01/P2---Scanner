@@ -41,20 +41,39 @@
 
 // Counting operations //////////
 
-int count=0;
-#define IF_COST 1
+int count = 0;
+
+#define IF_COST 5
+//^if an arithmetic operation is 1, an if is more expensive than 1 (~5, for example)
+// note that the "ifs" at loops are optimized and are not as costly
+
 #define FPRINTF_COST 50
-#define WRITE_MEMORY_COST 50
+#define WRITE_MEMORY_COST 10000
+// 10 000 is more accurate than 50, although you may want to throw 1 or 2 more 0s
+
 #define PRINTF_COST 1
-#define LECTURE_MEMORY_COST 50
+//^if fprintf is that high, printf should be higher too
+
+#define LECTURE_MEMORY_COST 10000
+// 10 000 is more accurate than 50, although you may want to throw 1 or 2 more 0s
+
 #define RETURN_COST 1
 #define KEEP_MEMORY 10
+//^what is this
 #define STRING_LEN_COST 5
+//^the performance of strlen depends on the length of the string. use the result of strlen as the cost
+
 #define CLOSE_FILE_COST 20
 #define ARITHMETIC_COST 1
+// ARITHMETIC_COST < IF_COST
+
 #define MEMORY_COPY_COST 20
+//the memory copy cost is proportional to the memory copied
+
 #define FREE_MEMORY_COST 20
+
 #define PRE_FUNC_COST 10
+// what is exacly this?
 
 // /////////////////////////////
 
@@ -78,7 +97,7 @@ To easly fix it, substitute by the following.
  * @param array The array of characters to be sorted
  * @param len The length of the array
  */
-void sort_chars(char *array, int len);
+void sort_chars(char* array, int len);
 
 /** 
  * Helper function to indicate if a certain character is a delimiter or not.
@@ -87,7 +106,6 @@ void sort_chars(char *array, int len);
  * @return True if c is a delimiter or false otherwise.
 */
 bool is_delimiter(char c); 
-
 
 /**
     returns "<element, IDENTIFIACOR_TAG>\0"  //includes the /0
@@ -107,8 +125,6 @@ bool is_delimiter(char c);
  */
 char* tokenize(int identificator, char* element, int len); 
 
-
-
 /** 
  * Helper function to generate token based on identifier and element
  * 
@@ -119,13 +135,10 @@ char* tokenize(int identificator, char* element, int len);
  */
 char* generate_token(const char* element, int len, const char* token_identifier);
 
-
-
-
 /*
-    based on the name of the file, creates the name of the output file
+    Based on the name of the file, creates the name of the output file
 */
-char* get_file_name(const char *argv1); 
+char* get_file_name(const char* argv1); 
 
 
 

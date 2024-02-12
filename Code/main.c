@@ -252,7 +252,7 @@ int processFile(const char* filename)
         }
 
         if (!success) {
-            if(current_token[0] != ' ' || (char)currentChar != '\n' || (char)currentChar != '\r' ) {
+            if(current_token[0] != ' ') {
 
                 char* processed_token = tokenize(ERROR_TOKEN, current_token, curr_token_idx); 
                 // ^current token index is also length
@@ -262,7 +262,7 @@ int processFile(const char* filename)
                 memcpy(&writting_buffer[writ_buff_idx], processed_token, processed_token_len); 
                 free(processed_token); 
                 
-            } // space is not an error
+            } 
         }
 
     }

@@ -1,6 +1,8 @@
 #include "utils.h"
 
 
+
+
 void sort_chars(char* array, int len) {
     // the trustworthy bubblesort
     char temp;
@@ -17,7 +19,6 @@ void sort_chars(char* array, int len) {
 
 }
 
-
 char* generate_token(const char* element, int len, const char* token_identifier) {
     int total_length = len + strlen(token_identifier) + 4; // 4 for "<>, " and '\0'
     // Allocate memory for the token string
@@ -26,7 +27,6 @@ char* generate_token(const char* element, int len, const char* token_identifier)
     sprintf(token, "<%s, %s>", element, token_identifier);
     return token;
 }
-
 
 char* tokenize(int identificator, char* element, int len) {
     char* token = NULL;
@@ -61,7 +61,6 @@ char* tokenize(int identificator, char* element, int len) {
     return token;
 }
 
-
 bool is_delimiter(char c) {
     // The list of possible delimiters
     char delimiters[] = {' ', '\t', '\n', '\r', '\0'}; //TODO: we should define the delimiters as a constant in the appropiate place 
@@ -78,8 +77,6 @@ bool is_delimiter(char c) {
 
     return false; // c is not a delimiter
 }
-
-
 
 char* get_file_name(const char* argv1) {
 

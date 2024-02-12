@@ -8,13 +8,6 @@
 
 #include "errors.h"
 
-
-
-
-
-
-
-
 #define NUM_DFA 7
 // total number of dfas
 
@@ -46,7 +39,7 @@
 
 extern int count_operations;
 #define COUNTFUNC(cost)  if(COUNTING_OPERATIONS) count_operations += cost; 
-//
+
 
 
 #define IF_COST 5
@@ -136,37 +129,26 @@ char* tokenize(int identificator, char* element, int len);
  */
 char* generate_token(const char* element, int len, const char* token_identifier);
 
-/*
-    Based on the name of the file, creates the name of the output file
-*/
+
+/** 
+ * Helper function that, based on the name of the file, creates the name of the output file
+ * 
+ * @param argv1 The name of the input file 
+ * @return The newly created name of the output file
+ */
 char* get_file_name(const char* argv1); 
 
 /**
  * Returns true if a token should be ignored for being a space, eol, tab, etc.
 */
+
+/** 
+ * Helper function that says if a token should be ignored(' ', '\n', '\f'...)
+ * 
+ * @param element The token to identify 
+ * @return True if the token should be ignored, false otherwise
+ */
 bool mustIgnoreElement(const char* element);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endif

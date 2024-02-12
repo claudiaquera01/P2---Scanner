@@ -1,7 +1,7 @@
 #include "utils.h"
 
 int count_operations=0;
-
+//char delimiters[] = {' ', '\t', '\n', '\r', '\0', '+', '*', '=', '>', '(', ')', ';', '{', '}', '[', ']', ','}; 
 
 void sort_chars(char* array, int len) {
     // the trustworthy bubblesort
@@ -86,7 +86,6 @@ char* tokenize(int identificator, char* element, int len) {
 bool is_delimiter(char c) {
     // The list of possible delimiters
     char delimiters[] = {' ', '\t', '\n', '\r', '\0', '+', '*', '=', '>', '(', ')', ';', '{', '}', '[', ']', ','}; 
-    //TODO: we should define the delimiters as a constant in the appropiate place 
 
     int delimiter_len = sizeof(delimiters) / sizeof(char); 
     // We iterate through all the delimiters to check if c matches any of them

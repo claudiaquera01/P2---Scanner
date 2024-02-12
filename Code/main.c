@@ -313,12 +313,11 @@ int main(int argc, char *argv[])
 {
     // Check if a file name is provided as a command-line argument
     if (argc != 2) {
-        COUNTFUNC(IF_COST)
         fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
-        COUNTFUNC(FPRINTF_COST)
+        //COUNTFUNC(FPRINTF_COST)
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MISSING_FILENAME);
-        COUNTFUNC(FPRINTF_COST)
-        COUNTFUNC(RETURN_COST)
+        //COUNTFUNC(FPRINTF_COST)
+        COUNTFUNC(2*FPRINTF_COST+RETURN_COST);
         return MAIN_ERROR_MISSING_FILENAME;
     }
 
@@ -332,7 +331,7 @@ int main(int argc, char *argv[])
         //COUNTFUNC(FPRINTF_COST)
         //COUNTFUNC(RETURN_COST)
 
-        COUNTFUNC(FPRINTF_COST + RETURN_COST)
+        COUNTFUNC(FPRINTF_COST + RETURN_COST);
 
         return MAIN_ERROR_FILE_PROCESSING;
     }

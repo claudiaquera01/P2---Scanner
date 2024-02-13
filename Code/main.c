@@ -253,11 +253,12 @@ int processFile(const char* filename)
     // Do last iteration
 
     printf("Final iteration! \n"); 
-
+    COUNTFUNC(PRINTF_COST);
 
     {
         //its weird but it could finalize with a valid token
         bool success = false;
+        COUNTFUNC(ARITHMETIC_COST);
         for (int i = 0; i < NUM_DFA; i++) {
 
             success = finalize_dfa(&dfas[i]);
@@ -273,9 +274,11 @@ int processFile(const char* filename)
                 writ_buff_idx += processed_token_len; 
 
                 curr_token_idx = 0; //reset buffer
+                COUNTFUNC(2*ARITHMETIC_COST+processed_token_len+MEMORY_COPY_COST+FREE_MEMORY_COST);
 
                 break;
             }
+            COUNTFUNC(IF_COST);
         }
 
         if (!success) {
@@ -290,7 +293,7 @@ int processFile(const char* filename)
                 free(processed_token); 
                 
                 writ_buff_idx += processed_token_len; 
-
+                COUNTFUNC(processed_token_len+MEMORY_COPY_COST+FREE_MEMORY_COST);
             } 
         }
 
@@ -301,6 +304,7 @@ int processFile(const char* filename)
 
         // Write scanner output into output file
         fwrite(writting_buffer, sizeof(char), writ_buff_idx, output_file);
+        COUNTFUNC(IF_COST+ARITHMETIC_COST+PRINTF_COST+WRITE_MEMORY_COST);
 
     }
 
@@ -318,6 +322,7 @@ int processFile(const char* filename)
 
     fclose(input_file);
     fclose(output_file);
+    COUNTFUNC(PRINTF_COST+3*FREE_MEMORY_COST+2*CLOSE_FILE_COST+RETURN_COST);
 
     return 0; //return success
 }

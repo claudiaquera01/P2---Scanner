@@ -5,20 +5,16 @@
 
 void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _num_columns, int* _final_state, int _final_state_len) { 
 
-	COUNTFUNC(LECTURE_MEMORY_COST * 3); // Memory allocation costs for alphabet, final_state and column map
-
     dfa->alphabet = _alphabet; 
     dfa->len_alphabet = strlen(dfa->alphabet); 
 
     dfa->num_columns = _num_columns; 
     dfa->column_map = (int*)calloc(dfa->len_alphabet, sizeof(int));
-	COUNTFUNC(WRITE_MEMORY_COST + 4*ARITHMETIC_COST);
 
     dfa->num_states = _num_states; 
     dfa->transition_table = (int*)calloc(sizeof(int), _num_columns * (dfa->num_states + 1)); 
     // ^ all the table is initialized to 0. this way, if a connection is not defined, the 
     // DFA will automatically reject the string. +1 is for rejecting state
-	COUNTFUNC(LECTURE_MEMORY_COST + 7*ARITHMETIC_COST);
 
     dfa->final_states = _final_state; 
     dfa->len_final_states = _final_state_len; 
@@ -27,8 +23,7 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _num_columns
     dfa->current_state = INITIALSTATE;
 
     dfa->alive = true;
-
-
+    COUNTFUNC(LECTURE_MEMORY_COST + 11*ARITHMETIC_COST);
 }
 
 

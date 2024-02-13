@@ -34,14 +34,16 @@ int processFile(const char* filename)
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
         COUNTFUNC(FPRINTF_COST+CLOSE_FILE_COST+RETURN_COST);
-        return PREPROCESS_ERROR_MEMORY_ALLOCATION; // TODO: cahnge for define error
+        return PREPROCESS_ERROR_MEMORY_ALLOCATION; 
     }
 
     char* current_token = (char*)malloc(sizeof(char) * BUFFER_SIZE); // buffer of the raw token
+    COUNTFUNC(IF_COST+ARITHMETIC_COST);
     if (current_token == NULL) { // Handle error when allocating the buffer
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
-        return PREPROCESS_ERROR_MEMORY_ALLOCATION; // TODO: cahnge for define error
+        COUNTFUNC(FPRINTF_COST+RETURN_COST+CLOSE_FILE_COST);
+        return PREPROCESS_ERROR_MEMORY_ALLOCATION; 
     }
     current_token[0] = '\0'; // to prevent 1 bug, dont remove
 
@@ -49,6 +51,7 @@ int processFile(const char* filename)
     DFA dfas[NUM_DFA];
     // Import the alphabet of our DFAs
     char alphabet[ALPHABETLEN] = {ALPHABET};
+    COUNTFUNC(3*ARITHMETIC_COST);
 
     {
         //----------------------------------------------TYPE DFA----------------------------------------------
@@ -143,7 +146,7 @@ int processFile(const char* filename)
         // Update dfa transition table with imported one
         fill_transition_table(&dfas[DFA_LITERALS], literal_doc_table);
     }
-
+    COUNTFUNC(15*ARITHMETIC_COST);
 
     int currentChar = getc(input_file); // Initializing variables to iterate through the file
     int look_ahead = getc(input_file);
@@ -153,7 +156,7 @@ int processFile(const char* filename)
     int curr_token_idx = 0; //also serves as length
     // Read the file character by character
     printf("Starting to actually process file! \n\n"); 
-
+    COUNTFUNC(6*ARITHMETIC_COST+PRINTF_COST);
     while (currentChar != EOF) {
 
         current_token[curr_token_idx] = (char)currentChar; 
@@ -163,8 +166,8 @@ int processFile(const char* filename)
 
 
         for (int i = 0; i < NUM_DFA; i++)  advance_dfa(&dfas[i], (char)currentChar);
-
-
+        
+        COUNTFUNC(2*ARITHMETIC_COST+PRINTF_COST);
         if (is_current_char_delimiter || is_look_ahead_delimiter) {
 
             /*
@@ -178,6 +181,7 @@ int processFile(const char* filename)
 
 
             bool success = false;
+            COUNTFUNC(2*ARITHMETIC_COST);
             for (int i = 0; i < NUM_DFA; i++) {
 
                 success = finalize_dfa(&dfas[i]);
@@ -192,9 +196,11 @@ int processFile(const char* filename)
                     free(processed_token); 
                     
                     writ_buff_idx += processed_token_len; 
+                    COUNTFUNC(processed_token_len+MEMORY_COPY_COST+FREE_MEMORY_COST);
 
                     break;
                 }
+                COUNTFUNC(IF_COST);
             }
 
             if (!success) {
@@ -212,7 +218,7 @@ int processFile(const char* filename)
                     free(processed_token); 
                     
                     writ_buff_idx += processed_token_len; 
-
+                    COUNTFUNC(processed_token_len+MEMORY_COPY_COST+FREE_MEMORY_COST+ARITHMETIC_COST);
 
                 } // space \n, \r or EOF is not an error
             }
@@ -221,7 +227,7 @@ int processFile(const char* filename)
             current_token[0] = '\0'; 
 
             for (int i = 0; i < NUM_DFA; i++) reset_dfa(&dfas[i]);
-
+            COUNTFUNC(IF_COST+ARITHMETIC_COST*2);
         }
 
         if (BUFFER_SIZE * BUFFER_THRESHOLD < writ_buff_idx) { 
@@ -234,11 +240,13 @@ int processFile(const char* filename)
             fwrite(writting_buffer, sizeof(char), writ_buff_idx + 1, output_file);
 
             writ_buff_idx = 0; // start again
+            COUNTFUNC(2*ARITHMETIC_COST+PRINTF_COST+WRITE_MEMORY_COST);
         }
         currentChar = look_ahead; // update chars
         look_ahead = getc(input_file);
         is_current_char_delimiter = is_look_ahead_delimiter;
         is_look_ahead_delimiter = is_delimiter((char)look_ahead);
+        COUNTFUNC(IF_COST+ARITHMETIC_COST*2);
     }
 
 

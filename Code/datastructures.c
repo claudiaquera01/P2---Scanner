@@ -12,13 +12,13 @@ void initialize_dfa(DFA* dfa, char* _alphabet, int _num_states, int _num_columns
 
     dfa->num_columns = _num_columns; 
     dfa->column_map = (int*)calloc(dfa->len_alphabet, sizeof(int));
-	COUNTFUNC(WRITE_MEMORY_COST);
+	COUNTFUNC(WRITE_MEMORY_COST + 4*ARITHMETIC_COST);
 
     dfa->num_states = _num_states; 
     dfa->transition_table = (int*)calloc(sizeof(int), _num_columns * (dfa->num_states + 1)); 
     // ^ all the table is initialized to 0. this way, if a connection is not defined, the 
     // DFA will automatically reject the string. +1 is for rejecting state
-	COUNTFUNC(LECTURE_MEMORY_COST);
+	COUNTFUNC(LECTURE_MEMORY_COST + 7*ARITHMETIC_COST);
 
     dfa->final_states = _final_state; 
     dfa->len_final_states = _final_state_len; 
@@ -36,11 +36,12 @@ int set_symbol_mapping(DFA* dfa, char symb, int col) {
 
     int index = get_symbol_index_BS(dfa->alphabet, dfa->len_alphabet, symb); 
 
-	COUNTFUNC(IF_COST + RETURN_COST);
+	COUNTFUNC(IF_COST + RETURN_COST + ARITHMETIC_COST);
     if(index == -1){
 		return -1; //return error and avoid bad memory access
 	}
 
+    COUNTFUNC(ARITHMETIC_COST);
     dfa->column_map[index] = col;
 
     return 0;
@@ -60,7 +61,8 @@ int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* map
 	}
 
     // Copy documentation mapping into dfa column mapping
-    int alphabet_len = dfa->len_alphabet; 
+    int alphabet_len = dfa->len_alphabet;
+    COUNTFUNC(ARITHMETIC_COST);
     for(int i = 0; i < alphabet_len; i++){
 		COUNTFUNC(IF_COST + ARITHMETIC_COST); // For conditional checks of i
         set_symbol_mapping(dfa, _alphabet[i], mapping_vector[i]);
@@ -129,7 +131,8 @@ void advance_dfa(DFA* dfa, char symbol) {
 
     if(new_state == 0) { 
         //has been rejected
-        dfa->alive = false; 
+        dfa->alive = false;
+        COUNTFUNC(ARITHMETIC_COST);
     }
 
 
@@ -141,7 +144,8 @@ bool finalize_dfa(DFA* dfa) {
 	COUNTFUNC(IF_COST + RETURN_COST);
     if(!dfa->alive) return false; //fast return
 
-    int final_state = dfa->current_state; 
+    int final_state = dfa->current_state;
+    COUNTFUNC(ARITHMETIC_COST);
 
     for(int i = 0; i < dfa->len_final_states; i++) {
 		COUNTFUNC(IF_COST*2 + ARITHMETIC_COST); // If cost for the i check and the if inside the loop
@@ -156,7 +160,8 @@ bool finalize_dfa(DFA* dfa) {
 
 void reset_dfa(DFA* dfa) {
     dfa->current_state = INITIALSTATE;
-    dfa->alive = true; 
+    dfa->alive = true;
+    COUNTFUNC(ARITHMETIC_COST*2);
 }
 
 
@@ -169,6 +174,7 @@ void free_dfa(DFA* dfa) {
     free(dfa->final_states); 
     free(dfa->transition_table);
     free(dfa->column_map);
+    COUNTFUNC(3*FREE_MEMORY_COST)
 }
 
 
@@ -177,7 +183,7 @@ int get_symbol_index_BS(char* list, int len, char element) {
     int l = 0; //left
     int r = len - 1; //right
     int m; //middle
-	COUNTFUNC(RETURN_COST + ARITHMETIC_COST);
+	COUNTFUNC(RETURN_COST + ARITHMETIC_COST*3);
 
     while(l <= r) {
         m = (l + r) >> 1; // floor  l+r / 2

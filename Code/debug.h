@@ -4,8 +4,12 @@
 // Define DEBUG directive
 #define DEBUG_ON 1
 #define DEBUG_OFF 0
+#define DEBUG_KEY "\n"
+#define START 0
+extern int num;
 #include "datastructures.h"
+#include "utils.h"
 // Functions
-void output_tokens_debug(FILE* output_file, Token* tokens, int num_tokens, int debug_mode);
-
+/* We use the function tokenize to get the token but we can apply the normal mode, or the debug mode*/
+char* debug_mode(int debug_mode; char* element , int identificator, int len, int debug_mode);
 #endif /* DEBUG_H */

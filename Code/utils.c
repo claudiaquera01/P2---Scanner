@@ -57,35 +57,35 @@ char* tokenize(int identificator, char* element, int len) {
     switch (identificator) {
         case DFA_TYPES:
             printf("Token |%s| identified as TYPE \n", element);
-            token = generate_token(element, len, TOKEN_TYPE);
+            token = debug_mode(element, len, TOKEN_TYPE);
             break;
         case DFA_IDENTIFIER:
             printf("Token |%s| identified as IDENTIFIER \n", element);
-            token = generate_token(element, len, TOKEN_IDENTIFIER);
+            token = debug_mode(element, len, TOKEN_IDENTIFIER);
             break;
         case DFA_KEYWORDS:
             printf("Token |%s| identified as KEYWORD \n", element);
-            token = generate_token(element, len, TOKEN_KEYWORD);
+            token = debug_mode(element, len, TOKEN_KEYWORD);
             break;
         case DFA_NUMBERS:
             printf("Token |%s| identified as NUMBER \n", element);
-            token = generate_token(element, len, TOKEN_NUMBER);
+            token = debug_mode(element, len, TOKEN_NUMBER);
             break;
         case DFA_SPECIAL_CHAR:
             printf("Token |%s| identified as SPECIAL CHAR \n", element);
-            token = generate_token(element, len, TOKEN_SPECIALCHAR);
+            token = debug_mode(element, len, TOKEN_SPECIALCHAR);
             break;
         case DFA_OPERATORS:
             printf("Token |%s| identified as OPERATOR \n", element);
-            token = generate_token(element, len, TOKEN_OPERAND);
+            token = debug_mode(element, len, TOKEN_OPERAND);
             break;
         case DFA_LITERALS:
             printf("Token |%s| identified as \"LITERAL\" \n", element);
-            token = generate_token(element, len, TOKEN_LITERAL);
+            token = debug_mode(element, len, TOKEN_LITERAL);
             break;
         default:
             printf("Token |%s| UNRECOGNIZED \n", element);
-            token = generate_token(element, len, TOKEN_NONRECOGNIZED);
+            token = debug_mode(element, len, TOKEN_NONRECOGNIZED);
     }
     COUNTFUNC(RETURN_COST);
     return token;

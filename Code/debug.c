@@ -4,7 +4,7 @@ int num=0;
 char* debug_mode(char* element , int identificator, int len, int debug_mode) {
     // Write tokens in the output version
     char* token=(char*)malloc(sizeof(char) * (len+4));
-    if(debug_mode=DEBUG_ON){
+    if(debug_mode==DEBUG_ON){
         if(num==START){
             printf("\n %d ",num);
             sprintf(token, "\n %d",num);

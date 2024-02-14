@@ -114,7 +114,7 @@ int set_symbol_mapping(DFA* dfa, char symb, int col);
 /*
   Fills the column mapping of the dfa according to the documentation mapping
 */
-int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* mapping_vector);
+int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* mapping_vector, int mapping_length);
 
 
 /*

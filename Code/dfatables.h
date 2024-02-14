@@ -17,6 +17,7 @@
 #define TYPEACCEPT 10
 #define TYPEACCEPTLEN 1
 // Defining mapping of alphabet to columns of type table (i,n,t,c,h,a,r,v,o,d,other)
+#define TYPELENGTH 75
 #define TYPEMAPPING 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10, \
                     10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10, \
                     5,10,3,9,10,10,10,4,0,10,10,10,10,1,8,10,10,6,10,2,10,7,10,10,10,10,10,10
@@ -39,6 +40,7 @@
 #define IDENTIFIERACCEPT 2
 #define IDENTIFIERACCEPTLEN 1
 // Define mapping of alphabet to columns of identifier table (Number, Lowercase, Uppercase, other)
+#define IDENTIFIERLENGTH 75
 #define IDENTIFIERMAPPING   3,3,3,3,3,3,0,0,0,0,0,0,0,0,0,0,3,3,3, \
                             2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3, \
                             1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3
@@ -53,6 +55,7 @@
 #define KEYWORDACCEPT 18
 #define KEYWORDACCEPTLEN 1
 // Defining mapping of alphabet to columns of keyword table (i,f,e,l,s,w,h,m,a,n,r,t,u,other)
+#define KEYWORDLENGTH 75
 #define KEYWORDMAPPING 13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, \
                         13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, \
                         8,13,13,13,2,1,13,6,0,13,13,3,7,9,13,13,13,10,4,11,12,13,5,13,13,13,13,13
@@ -83,6 +86,7 @@
 #define NUMBERACCEPT 2
 #define NUMBERACCEPTLEN 1
 // Defining mapping of alphabet to columns of number table (0,1,2,3,4,5,6,7,8,9,other)
+#define NUMBERLENGTH 75
 #define NUMBERMAPPING 1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
@@ -97,6 +101,7 @@
 #define SPECIALACCEPT 2
 #define SPECIALACCEPTLEN 1
 // Defining mapping of alphabet to columns of special characters table(Special, other)
+#define SPECIALLENGTH 75
 #define SPECIALMAPPING 1,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0
@@ -111,6 +116,7 @@
 #define OPERATORACCEPT 2
 #define OPERATORACCEPTLEN 1
 // Defining mapping of alphabet to columns of operator table (Operator, other)
+#define OPERATORLENGTH 75
 #define OPERATORMAPPING 1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
@@ -125,6 +131,7 @@
 #define LITERALACCEPT 3
 #define LITERALACCEPTLEN 1
 // Defining mapping of alphabet to columns of literal table (", other)
+#define LITERALLENGTH 75
 #define LITERALMAPPING 0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1

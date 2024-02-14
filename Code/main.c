@@ -62,7 +62,7 @@ int processFile(const char* filename)
         // Import mapping list of type table
         int type_mapping[ALPHABETLEN] = {TYPEMAPPING};
         // Update dfa mapping list with imported one
-        fill_column_mapping(&dfas[DFA_TYPES], alphabet, ALPHABETLEN, type_mapping);
+        fill_column_mapping(&dfas[DFA_TYPES], alphabet, ALPHABETLEN, type_mapping, TYPELENGTH);
         // Import transition table of type table
         int type_doc_table[TYPEROWS*TYPECOLUMNS] = {TYPETABLE};
         // Update dfa transition table with imported one
@@ -75,7 +75,7 @@ int processFile(const char* filename)
         // Import mapping list of identifier table
         int identifier_mapping[ALPHABETLEN] = {IDENTIFIERMAPPING};
         // Update dfa mapping list with imported one
-        fill_column_mapping(&dfas[DFA_IDENTIFIER], alphabet, ALPHABETLEN, identifier_mapping);
+        fill_column_mapping(&dfas[DFA_IDENTIFIER], alphabet, ALPHABETLEN, identifier_mapping, IDENTIFIERLENGTH);
         // Import transition table of identifier table
         int identifier_doc_table[IDENTIFIERROWS*IDENTIFIERCOLUMNS] = {IDENTIFIERTABLE};
         // Update dfa transition table with imported one
@@ -88,7 +88,7 @@ int processFile(const char* filename)
         // Import mapping list of keyword table
         int keyword_mapping[ALPHABETLEN] = {KEYWORDMAPPING};
         // Update dfa mapping list with imported one
-        fill_column_mapping(&dfas[DFA_KEYWORDS], alphabet, ALPHABETLEN, keyword_mapping);
+        fill_column_mapping(&dfas[DFA_KEYWORDS], alphabet, ALPHABETLEN, keyword_mapping, KEYWORDLENGTH);
         // Import transition table of keyword table
         int keyword_doc_table[KEYWORDROWS*KEYWORDCOLUMNS] = {KEYWORDTABLE};
         // Update dfa transition table with imported one
@@ -101,7 +101,7 @@ int processFile(const char* filename)
         // Import mapping list of number table
         int number_mapping[ALPHABETLEN] = {NUMBERMAPPING};
         // Update dfa mapping list with imported one
-        fill_column_mapping(&dfas[DFA_NUMBERS], alphabet, ALPHABETLEN, number_mapping);
+        fill_column_mapping(&dfas[DFA_NUMBERS], alphabet, ALPHABETLEN, number_mapping, NUMBERLENGTH);
         // Import transition table of number table
         int number_doc_table[NUMBERROWS*NUMBERCOLUMNS] = {NUMBERTABLE};
         // Update dfa transition table with imported one
@@ -114,7 +114,7 @@ int processFile(const char* filename)
         // Import mapping list of special table
         int special_mapping[ALPHABETLEN] = {SPECIALMAPPING};
         // Update dfa mapping list with imported one
-        fill_column_mapping(&dfas[DFA_SPECIAL_CHAR], alphabet, ALPHABETLEN, special_mapping);
+        fill_column_mapping(&dfas[DFA_SPECIAL_CHAR], alphabet, ALPHABETLEN, special_mapping, SPECIALLENGTH);
         // Import transition table of special char table
         int special_doc_table[SPECIALROWS*SPECIALCOLUMNS] = {SPECIALTABLE};
         // Update dfa transition table with imported one
@@ -127,7 +127,7 @@ int processFile(const char* filename)
         // Import mapping list of operator table
         int operator_mapping[ALPHABETLEN] = {OPERATORMAPPING};
         // Update dfa mapping list with imported one
-        fill_column_mapping(&dfas[DFA_OPERATORS], alphabet, ALPHABETLEN, operator_mapping);
+        fill_column_mapping(&dfas[DFA_OPERATORS], alphabet, ALPHABETLEN, operator_mapping, OPERATORLENGTH);
         // Import transition table of operator table
         int operator_doc_table[OPERATORROWS*OPERATORCOLUMNS] = {OPERATORTABLE};
         // Update dfa transition table with imported one
@@ -140,7 +140,7 @@ int processFile(const char* filename)
         // Import mapping list of literal table
         int literal_mapping[ALPHABETLEN] = {LITERALMAPPING};
         // Update dfa mapping list with imported one
-        fill_column_mapping(&dfas[DFA_LITERALS], alphabet, ALPHABETLEN, literal_mapping);
+        fill_column_mapping(&dfas[DFA_LITERALS], alphabet, ALPHABETLEN, literal_mapping, LITERALLENGTH);
         // Import transition table of literal table
         int literal_doc_table[LITERALROWS*LITERALCOLUMNS] = {LITERALTABLE};
         // Update dfa transition table with imported one

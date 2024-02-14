@@ -44,26 +44,25 @@ int set_symbol_mapping(DFA* dfa, char symb, int col) {
 
 
 
-/*TODO: alphabet length is already on dfa. Its not needed. We should get the lenght of 
-the mapping vector and check that it has the same length as the alphabet length. */
-int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* mapping_vector) {
 
-    int mapping_vector_len = -1; //TODO: put this as a perameter
+int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* mapping_vector, int mapping_length) {
+
+
 	COUNTFUNC(ARITHMETIC_COST + IF_COST + RETURN_COST);
 
-    if(alphabet_length < mapping_vector_len){
+    if(alphabet_length < mapping_length){
 		return 2; //crash for bad memory access
 	}
 
     // Copy documentation mapping into dfa column mapping
-    int alphabet_len = dfa->len_alphabet;
+    //int alphabet_len = dfa->len_alphabet;
     COUNTFUNC(ARITHMETIC_COST);
-    for(int i = 0; i < alphabet_len; i++){
+    for(int i = 0; i < alphabet_length; i++){
 		COUNTFUNC(IF_COST + ARITHMETIC_COST); // For conditional checks of i
         set_symbol_mapping(dfa, _alphabet[i], mapping_vector[i]);
     }
 
-    return (int)(alphabet_length != mapping_vector_len); 
+    return (int)(alphabet_length != mapping_length);
     //^returns 0 if the lengths are exact or 1 if not (some mapping vector positions are left unchaged). 
 }
 
@@ -166,9 +165,9 @@ void free_dfa(DFA* dfa) {
     //viva la revoluction!!!!
 
 
-    free(dfa->final_states); 
-    free(dfa->transition_table);
-    free(dfa->column_map);
+    //free(dfa->final_states);
+    //free(dfa->transition_table);
+    //free(dfa->column_map);
     COUNTFUNC(3*FREE_MEMORY_COST)
 }
 

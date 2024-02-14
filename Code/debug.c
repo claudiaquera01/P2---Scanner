@@ -1,4 +1,4 @@
-
+#include "debug.h"
 int num=0;
 char* debug_mode(const char* element, int len, const char* token_identifier) {
     // Allocate memory for the token string

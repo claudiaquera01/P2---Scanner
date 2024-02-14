@@ -1,31 +1,41 @@
-#include "debug.h"
 
 int num=0;
-char* debug_mode(char* element , int identificator, int len, int debug_mode) {
-    // Write tokens in the output version
-    char* token=(char*)malloc(sizeof(char) * (len+4));
-    if(debug_mode==DEBUG_ON){
-        if(num==START){
-            printf("\n %d ",num);
-            sprintf(token, "\n %d",num);
+char* debug_mode(const char* element, int len, const char* token_identifier) {
+    // Allocate memory for the token string
+    char* token = (char*)malloc(sizeof(char) * (len + BUFFER_LEN));
+    if (token == NULL) {
+        // Handle memory allocation failure
+        return NULL;
+    }
+
+    if (debug == DEBUG_ON) {
+        if (num == START) {
+            sprintf(token, "\n %d ", num);
             num++;
-            COUNTFUNC(2*PRINTF_COST+ARITHMETIC_COST);
+            COUNTFUNC(ARITHMETIC_COST+PRINTF_COST);
         }
         if(strcmp(DEBUG_KEY,element)==0){
-            token=tokenize(identificator, element, len);
-            printf("\n %d ",num);
-            sprintf(token, "\n %d",num);
-            num++;
-            COUNTFUNC(2*PRINTF_COST+ARITHMETIC_COST);
-        }else{
-            token=tokenize(identificator, element, len);
+            sprintf(token, "\n %d ", num);  // Add the number before the token
+            COUNTFUNC(PRINTF_COST);
         }
-        COUNTFUNC(2*IF_COST);
-    }else{
-        token=(char*)malloc(sizeof(char) * (len));
-        token=tokenize(identificator, element, len);
-        COUNTFUNC(ARITHMETIC_COST);
+        strcat(token, generate_token(element, len, token_identifier));
+
+        if(strcmp(DEBUG_KEY,element)==0){
+            num++;
+            COUNTFUNC(ARITHMETIC_COST);
+        }
+        //num++;
+        COUNTFUNC(ARITHMETIC_COST + PRINTF_COST + 2*IF_COST);
+    } else {
+        if(strcmp(DEBUG_KEY,element)==0){
+            //sprintf(token, "\n ");  // Add the number before the token
+            strcat(token, "\n ");
+        }
+        strcat(token, generate_token(element, len, token_identifier));
+
+        sprintf(token, " ");  // Add space to avoid rare characters
+        strcat(token, generate_token(element, len, token_identifier));
+        COUNTFUNC(3*ARITHMETIC_COST + PRINTF_COST + IF_COST);
     }
-    COUNTFUNC(ARITHMETIC_COST+RETURN_COST+IF_COST);
     return token;
 }

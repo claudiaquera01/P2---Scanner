@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h> 
-
+#include "debug.h"
 #include "errors.h"
 
 #define NUM_DFA 7

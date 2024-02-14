@@ -6,6 +6,7 @@
 #define DEBUG_OFF 0
 #define DEBUG_KEY "\n"
 #define START 0
+#define BUFFER_LEN 400
 extern int debug;
 extern int num;
 #include "datastructures.h"

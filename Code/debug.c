@@ -8,8 +8,7 @@ char* debug_mode(const char* element, int len, const char* token_identifier) {
     // Allocate memory for the token string
     char* token = (char*)malloc(sizeof(char) * (len + BUFFER_LEN));
     if (token == NULL) {
-        // TODO: Handle memory allocation failure
-        return NULL;
+        return DEBUG_MODE_ERROR_MEMORY_ALLOCATION;
     }
 
     token[0] = '\0'; 

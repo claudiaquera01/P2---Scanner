@@ -183,7 +183,7 @@ int processFile(const char* filename)
     // Update dfa transition table with imported one
     fill_transition_table(&dfas[DFA_LITERALS], literal_doc_table);
 
-    print_dfa(&dfas[DFA_LITERALS]); 
+    //print_dfa(&dfas[DFA_LITERALS]); 
 
 
 

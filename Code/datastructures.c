@@ -50,19 +50,20 @@ int fill_column_mapping(DFA* dfa, char* _alphabet, int alphabet_length, int* map
 
 	COUNTFUNC(ARITHMETIC_COST + IF_COST + RETURN_COST);
 
-    if(alphabet_length < mapping_length){
+    if(dfa->len_alphabet < mapping_length){
 		return 2; //crash for bad memory access
 	}
 
     // Copy documentation mapping into dfa column mapping
     //int alphabet_len = dfa->len_alphabet;
     COUNTFUNC(ARITHMETIC_COST);
-    for(int i = 0; i < alphabet_length; i++){
+    for(int i = 0; i < dfa->len_alphabet; i++) {
 		COUNTFUNC(IF_COST + ARITHMETIC_COST); // For conditional checks of i
         set_symbol_mapping(dfa, _alphabet[i], mapping_vector[i]);
     }
-
-    return (int)(alphabet_length != mapping_length);
+    int ret = (int)(dfa->len_alphabet != mapping_length); 
+    if(ret != 0) printf("Error while setting mapping vector. \n"); 
+    return ret;
     //^returns 0 if the lengths are exact or 1 if not (some mapping vector positions are left unchaged). 
 }
 
@@ -97,13 +98,15 @@ int fill_transition_table(DFA* dfa, int* doc_table) {
 		COUNTFUNC(IF_COST + ARITHMETIC_COST);
         for (int j = 0; j < dfa->num_columns; j++) {
 			COUNTFUNC(IF_COST + ARITHMETIC_COST * 2);
-            set_dfa_transition_table_value(dfa, i, j, doc_table[i * dfa->num_columns + j]);
+            int r = set_dfa_transition_table_value(dfa, i, j, doc_table[i * dfa->num_columns + j]);
+            if(r != 0) {
+                printf("Setting_transition table Error. \n"); 
+            } 
         }
     }
 	COUNTFUNC(RETURN_COST); 
     return 0; 
 }
-
 
 void advance_dfa(DFA* dfa, char symbol) {
 

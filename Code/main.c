@@ -214,8 +214,11 @@ int processFile(const char* filename)
             COUNTFUNC(IF_COST+ARITHMETIC_COST*2);
             continue; 
         }*/
-
-        for (int i = 0; i < NUM_DFA; i++)  advance_dfa(&dfas[i], (char)currentChar); 
+        // As the delimeter whitespace is not part of our alphabet, ensure literals are not interrupted by whitesspaces
+        if(currentChar == ' ' && dfas[DFA_LITERALS].alive){}
+        else {
+            for (int i = 0; i < NUM_DFA; i++) advance_dfa(&dfas[i], (char) currentChar);
+        }
 
         bool is_str_candidate = dfas[DFA_LITERALS].alive; 
 
@@ -228,7 +231,6 @@ int processFile(const char* filename)
                 is_str_candidate = false; 
 
             }
-
         }
 
 

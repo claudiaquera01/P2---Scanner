@@ -125,6 +125,8 @@
                         0, 0
 
 
+
+
 #define LITERALCOLUMNS 2
 #define LITERALROWS 4
 // Defining accepting state for literals dfa
@@ -135,9 +137,33 @@
 #define LITERALMAPPING 0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
                         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-#define LITERALTABLE 0, 0, \
+
+
+#define LITERALTABLE    0, 0, \
                         2, 0, \
                         3, 2, \
                         0, 0
+
+
+
+
+#define ALPHABET_LITERALS '"', '(', ')', '*', '+', ',', '0','1','2','3','4','5','6','7','8','9', ';', '=', '>', \
+                'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '[', ']', \
+                'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', '{', '}', ' '
+
+#define ALPHABET_LEN_LITERALS 76
+
+#define LITERALMAPPING_2 0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
+                        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, \
+                        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1
+
+#define LITERAL_MAPPING_LENGHT 76
+
+
+
+
+
+
+
 
 #endif // DFATABLES_H

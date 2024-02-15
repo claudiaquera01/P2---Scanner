@@ -55,6 +55,7 @@ int processFile(const char* filename)
 
     {
         //----------------------------------------------TYPE DFA----------------------------------------------
+        
         // Import accepting state list of type table
         int type_accepting[TYPEACCEPTLEN] = {TYPEACCEPT};
         // Initialize type dfa
@@ -67,7 +68,9 @@ int processFile(const char* filename)
         int type_doc_table[TYPEROWS*TYPECOLUMNS] = {TYPETABLE};
         // Update dfa transition table with imported one
         fill_transition_table(&dfas[DFA_TYPES], type_doc_table);
+        
         //----------------------------------------------IDENTIFIER DFA----------------------------------------------
+        
         // Import accepting state list of identifier table
         int identifier_accepting[IDENTIFIERACCEPTLEN] = {IDENTIFIERACCEPT};
         // Initialize identifier dfa
@@ -80,7 +83,9 @@ int processFile(const char* filename)
         int identifier_doc_table[IDENTIFIERROWS*IDENTIFIERCOLUMNS] = {IDENTIFIERTABLE};
         // Update dfa transition table with imported one
         fill_transition_table(&dfas[DFA_IDENTIFIER], identifier_doc_table);
+        
         //----------------------------------------------KEYWORD DFA----------------------------------------------
+        
         // Import accepting state list of keyword table
         int keyword_accepting[KEYWORDACCEPTLEN] = {KEYWORDACCEPT};
         // Initialize keyword dfa
@@ -93,7 +98,9 @@ int processFile(const char* filename)
         int keyword_doc_table[KEYWORDROWS*KEYWORDCOLUMNS] = {KEYWORDTABLE};
         // Update dfa transition table with imported one
         fill_transition_table(&dfas[DFA_KEYWORDS], keyword_doc_table);
+        
         //----------------------------------------------NUMBER DFA----------------------------------------------
+        
         // Import accepting state list of number table
         int number_accepting[NUMBERACCEPTLEN] = {NUMBERACCEPT};
         // Initialize number dfa
@@ -106,7 +113,9 @@ int processFile(const char* filename)
         int number_doc_table[NUMBERROWS*NUMBERCOLUMNS] = {NUMBERTABLE};
         // Update dfa transition table with imported one
         fill_transition_table(&dfas[DFA_NUMBERS], number_doc_table);
+        
         //----------------------------------------------SPECIAL CHAR DFA----------------------------------------------
+        
         // Import accepting state list of special char table
         int special_accepting[SPECIALACCEPTLEN] = {SPECIALACCEPT};
         // Initialize special char dfa
@@ -119,7 +128,9 @@ int processFile(const char* filename)
         int special_doc_table[SPECIALROWS*SPECIALCOLUMNS] = {SPECIALTABLE};
         // Update dfa transition table with imported one
         fill_transition_table(&dfas[DFA_SPECIAL_CHAR], special_doc_table);
+        
         //----------------------------------------------OPERATOR DFA----------------------------------------------
+        
         // Import accepting state list of operator table
         int operator_accepting[OPERATORACCEPTLEN] = {OPERATORACCEPT};
         // Initialize operator dfa
@@ -132,19 +143,42 @@ int processFile(const char* filename)
         int operator_doc_table[OPERATORROWS*OPERATORCOLUMNS] = {OPERATORTABLE};
         // Update dfa transition table with imported one
         fill_transition_table(&dfas[DFA_OPERATORS], operator_doc_table);
+        
         //----------------------------------------------LITERAL DFA----------------------------------------------
-        // Import accepting state list of literal table
+        
+        /*
+            // Import accepting state list of literal table
+            int literal_accepting[LITERALACCEPTLEN] = {LITERALACCEPT};
+            // Initialize literal dfa
+            initialize_dfa(&dfas[DFA_LITERALS], alphabet, LITERALROWS, LITERALCOLUMNS, literal_accepting, LITERALACCEPTLEN);
+            // Import mapping list of literal table
+            int literal_mapping[ALPHABETLEN] = {LITERALMAPPING};
+            // Update dfa mapping list with imported one
+            fill_column_mapping(&dfas[DFA_LITERALS], alphabet, ALPHABETLEN, literal_mapping, LITERALLENGTH);
+            // Import transition table of literal table
+            int literal_doc_table[LITERALROWS*LITERALCOLUMNS] = {LITERALTABLE};
+            // Update dfa transition table with imported one
+            fill_transition_table(&dfas[DFA_LITERALS], literal_doc_table);
+
+        */
+
+            // Import accepting state list of literal table
         int literal_accepting[LITERALACCEPTLEN] = {LITERALACCEPT};
         // Initialize literal dfa
         initialize_dfa(&dfas[DFA_LITERALS], alphabet, LITERALROWS, LITERALCOLUMNS, literal_accepting, LITERALACCEPTLEN);
         // Import mapping list of literal table
-        int literal_mapping[ALPHABETLEN] = {LITERALMAPPING};
+        int literal_mapping[ALPHABET_LEN_LITERALS] = {LITERALMAPPING_2};
         // Update dfa mapping list with imported one
-        fill_column_mapping(&dfas[DFA_LITERALS], alphabet, ALPHABETLEN, literal_mapping, LITERALLENGTH);
+        fill_column_mapping(&dfas[DFA_LITERALS], alphabet, ALPHABET_LEN_LITERALS, literal_mapping, LITERAL_MAPPING_LENGHT);
         // Import transition table of literal table
         int literal_doc_table[LITERALROWS*LITERALCOLUMNS] = {LITERALTABLE};
         // Update dfa transition table with imported one
         fill_transition_table(&dfas[DFA_LITERALS], literal_doc_table);
+
+
+
+
+
     }
     COUNTFUNC(15 * ARITHMETIC_COST);
 
@@ -157,7 +191,7 @@ int processFile(const char* filename)
     int curr_token_idx = 0; //also serves as length
     // Read the file character by character
     printf("Starting to actually process file! \n\n"); 
-    COUNTFUNC(6*ARITHMETIC_COST+PRINTF_COST);
+    COUNTFUNC(6 * ARITHMETIC_COST+PRINTF_COST);
     while (currentChar != EOF) {
 
         current_token[curr_token_idx] = (char)currentChar; 
@@ -165,20 +199,39 @@ int processFile(const char* filename)
 
         //printf("Current char: \t\"%c\" \n", currentChar); 
 
+        /*
+        bool is_str_candidate = dfas[DFA_LITERALS].alive; 
+        bool is_original_state = dfas[DFA_LITERALS].current_state == START; 
+        //printf("%d\n", is_original_state); 
+        // && !is_original_state 
+        if(is_str_candidate && !is_original_state && (char)currentChar == ' ') {
+
+            //go to next iteration
+            currentChar = look_ahead; // update chars
+            look_ahead = getc(input_file);
+            is_current_char_delimiter = is_look_ahead_delimiter;
+            is_look_ahead_delimiter = is_delimiter((char)look_ahead);
+            COUNTFUNC(IF_COST+ARITHMETIC_COST*2);
+            continue; 
+        }*/
 
         for (int i = 0; i < NUM_DFA; i++)  advance_dfa(&dfas[i], (char)currentChar); 
 
         bool is_str_candidate = dfas[DFA_LITERALS].alive; 
+
         if(is_str_candidate) {
 
             //printf("String candidate! \n"); 
-            printf("Current char: \t\"%c\" \n", currentChar); 
-            printf("%s\n\n", current_token); 
+            printf("Current (literal) char: \t\"%c\" \n", (char)currentChar); 
+            //printf("%s\n\n", current_token); 
+            if((char)currentChar == '\"' && dfas[DFA_LITERALS].current_state != START) {
+                is_str_candidate = false; 
+
+            }
 
         }
 
-        //^dont stop detecting if this could be a string
-        
+
         COUNTFUNC(2 * ARITHMETIC_COST + PRINTF_COST);
         //if ((is_current_char_delimiter || is_look_ahead_delimiter)) {
         if ((is_current_char_delimiter || is_look_ahead_delimiter) && !is_str_candidate) {
@@ -207,7 +260,6 @@ int processFile(const char* filename)
                         COUNTFUNC(IF_COST);
                         break; 
                     }
-                    // ^current token index is also length
                     
                     int processed_token_len = strlen(processed_token); 
 

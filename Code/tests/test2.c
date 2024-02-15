@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
         i += 1; 
     }
 
-    char MyFunnyList[] = "Forgotten information"; 
+    char MyFunnyList[] = "ForgottenInformation"; 
 
     void* my_unrecognized_variable = "This cannot be recognized by the undersoce"; 
 

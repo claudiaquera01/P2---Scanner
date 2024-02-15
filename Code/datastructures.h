@@ -160,6 +160,10 @@ int set_dfa_transition_table_value(DFA* dfa, int state, int column, int new_stat
 */
 int fill_transition_table(DFA* dfa, int* doc_table);
 
+/*
+    Prints the contents of the dfa. For debugging pruposes. 
+*/
+void print_dfa(DFA* dfa); 
 
 /*
     frees all the contents inside the dfa. does NOT free alphabet nor the dfa itself .

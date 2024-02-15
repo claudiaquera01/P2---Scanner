@@ -157,6 +157,40 @@ void reset_dfa(DFA* dfa) {
     COUNTFUNC(ARITHMETIC_COST*2);
 }
 
+void print_dfa(DFA* dfa) {
+
+    printf("=======================================================================\n\n"); 
+
+    printf("Alive: %d \tCurrent State: %d\n\n", dfa->alive, dfa->current_state); 
+
+    printf("Alphabet: |%s|\n", dfa->alphabet); 
+    printf("Mapping vector: |"); 
+    for(int i = 0; i < dfa->len_alphabet; i++) {
+        printf("%d, ", dfa->column_map[i]); 
+    }
+    printf("|\n"); 
+
+    printf("Num Columns: %d\t Num States: %d (+rejecting state)\n", dfa->num_columns, dfa->num_states); 
+    printf("Initial State: %d\t Accepting States (%d): ", dfa->initial_state, dfa->len_final_states); 
+    for(int i = 0; i < dfa->len_final_states; i++) {
+        printf("%d, ", dfa->final_states[i]); 
+    }
+    printf("\n\n"); 
+
+    printf("Transition Table: \n"); 
+
+    for(int i = 0; i < dfa->num_states; i++){ 
+        for(int j = 0; j < dfa->num_columns; j++){
+            printf("%d ", get_dfa_transition_table_value(dfa, i, j)); 
+        }
+        printf("\n"); 
+    }
+
+    printf("\n"); 
+
+    printf("=======================================================================\n\n"); 
+
+}
 
 void free_dfa(DFA* dfa) {
 

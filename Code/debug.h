@@ -14,6 +14,7 @@
 #define DEBUG_KEY "\n"
 #define START 1
 #define BUFFER_LEN 400
+#define DEBUG_MODE_ERROR_MEMORY_ALLOCATION 3
 
 
 extern int debug;

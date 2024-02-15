@@ -1,8 +1,8 @@
 #include "debug.h"
 
-int num = 0;
-int debug = DEBUG_OFF; 
-//int debug = DEBUG_ON; 
+int num = 1;
+//int debug = DEBUG_OFF; 
+int debug = DEBUG_ON; 
 
 char* debug_mode(const char* element, int len, const char* token_identifier) {
     // Allocate memory for the token string

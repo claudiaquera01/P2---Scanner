@@ -12,7 +12,7 @@
 #define DEBUG_ON 1
 #define DEBUG_OFF 0
 #define DEBUG_KEY "\n"
-#define START 0
+#define START 1
 #define BUFFER_LEN 400
 
 

@@ -35,7 +35,6 @@ char* debug_mode(const char* element, int len, const char* token_identifier) {
             num++;
             COUNTFUNC(ARITHMETIC_COST);
         }
-        //num++;
         COUNTFUNC(ARITHMETIC_COST + PRINTF_COST + 2*IF_COST);
     } else {
         token=generate_token(element, len, token_identifier);

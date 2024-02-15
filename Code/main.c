@@ -163,13 +163,25 @@ int processFile(const char* filename)
         current_token[curr_token_idx] = (char)currentChar; 
         curr_token_idx++; 
 
-        printf("Current char: \t\"%c\" \n", currentChar); 
+        //printf("Current char: \t\"%c\" \n", currentChar); 
 
 
-        for (int i = 0; i < NUM_DFA; i++)  advance_dfa(&dfas[i], (char)currentChar);
+        for (int i = 0; i < NUM_DFA; i++)  advance_dfa(&dfas[i], (char)currentChar); 
+
+        bool is_str_candidate = dfas[DFA_LITERALS].alive; 
+        if(is_str_candidate) {
+
+            //printf("String candidate! \n"); 
+            printf("Current char: \t\"%c\" \n", currentChar); 
+            printf("%s\n\n", current_token); 
+
+        }
+
+        //^dont stop detecting if this could be a string
         
         COUNTFUNC(2 * ARITHMETIC_COST + PRINTF_COST);
-        if (is_current_char_delimiter || is_look_ahead_delimiter) {
+        //if ((is_current_char_delimiter || is_look_ahead_delimiter)) {
+        if ((is_current_char_delimiter || is_look_ahead_delimiter) && !is_str_candidate) {
 
             /*
                 this check ensures that when the lookahead is a delimiter, 
@@ -251,7 +263,7 @@ int processFile(const char* filename)
             /*the writting buffer is starting to get full. empty it*/
             writting_buffer[writ_buff_idx] = '\0'; 
 
-            printf("parsed text added: %s\n\n", writting_buffer); 
+            //printf("parsed text added: %s\n\n", writting_buffer); 
 
             // Write scanner output into output file
             fwrite(writting_buffer, sizeof(char), writ_buff_idx + 1, output_file);
@@ -317,7 +329,7 @@ int processFile(const char* filename)
         //finally copy the data to the file
 
         writting_buffer[writ_buff_idx] = '\0';
-        printf("parsed text added: %s\n\n", writting_buffer); 
+        //printf("parsed text added: %s\n\n", writting_buffer); 
 
         // Write scanner output into output file
         fwrite(writting_buffer, sizeof(char), writ_buff_idx, output_file);

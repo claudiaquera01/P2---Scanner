@@ -31,23 +31,16 @@ bool mustIgnoreElement(const char* element){
 }
 
 char* generate_token(const char* element, int len, const char* token_identifier) {
+
     int total_length = len + strlen(token_identifier) + 4; // 4 for "<>, " and '\0'
     // Allocate memory for the token string
     char* token = (char*)malloc(sizeof(char) * (total_length));
     COUNTFUNC(ARITHMETIC_COST * 2 + 2 * IF_COST);
 
-    if (mustIgnoreElement(element)) {
-        //sprintf(token, " ");
-        //COUNTFUNC(FPRINTF_COST); 
-        token[0] = '\0'; // add nothing
-        COUNTFUNC(ARITHMETIC_COST);
-
-
-    } else {
-        // Construct the token string
-        sprintf(token, "<%s, %s> ", element, token_identifier);
-        COUNTFUNC(FPRINTF_COST); 
-    }
+    //must_ignore_char() case already handled
+    sprintf(token, "<%s, %s> ", element, token_identifier);
+    COUNTFUNC(FPRINTF_COST); 
+    
     COUNTFUNC(RETURN_COST);
     return token;
 }
@@ -55,40 +48,48 @@ char* generate_token(const char* element, int len, const char* token_identifier)
 char* tokenize(int identificator, char* element, int len) {
     char* token = NULL;
 
-    COUNTFUNC(ARITHMETIC_COST*2 + PRINTF_COST);
+    COUNTFUNC(IF_COST + ARITHMETIC_COST*2 + PRINTF_COST);
     // Based on the accepted DFA and read string, determine the token
     switch (identificator) {
         case DFA_TYPES:
-            printf("Token |%s| identified as TYPE \n", element);
+            //printf("Token |%s| identified as TYPE \n", element);
             token = debug_mode(element, len, TOKEN_TYPE);
             break;
         case DFA_IDENTIFIER:
-            printf("Token |%s| identified as IDENTIFIER \n", element);
+            //printf("Token |%s| identified as IDENTIFIER \n", element);
             token = debug_mode(element, len, TOKEN_IDENTIFIER);
             break;
         case DFA_KEYWORDS:
-            printf("Token |%s| identified as KEYWORD \n", element);
+            //printf("Token |%s| identified as KEYWORD \n", element);
             token = debug_mode(element, len, TOKEN_KEYWORD);
             break;
         case DFA_NUMBERS:
-            printf("Token |%s| identified as NUMBER \n", element);
+            //printf("Token |%s| identified as NUMBER \n", element);
             token = debug_mode(element, len, TOKEN_NUMBER);
             break;
         case DFA_SPECIAL_CHAR:
-            printf("Token |%s| identified as SPECIAL CHAR \n", element);
+            //printf("Token |%s| identified as SPECIAL CHAR \n", element);
             token = debug_mode(element, len, TOKEN_SPECIALCHAR);
             break;
         case DFA_OPERATORS:
-            printf("Token |%s| identified as OPERATOR \n", element);
+            //printf("Token |%s| identified as OPERATOR \n", element);
             token = debug_mode(element, len, TOKEN_OPERAND);
             break;
         case DFA_LITERALS:
-            printf("Token |%s| identified as \"LITERAL\" \n", element);
+            //printf("Token |%s| identified as \"LITERAL\" \n", element);
             token = debug_mode(element, len, TOKEN_LITERAL);
             break;
-        default:
-            printf("Token |%s| UNRECOGNIZED \n", element);
-            token = debug_mode(element, len, TOKEN_NONRECOGNIZED);
+        default: 
+
+            token = debug_mode(element, len, TOKEN_NONRECOGNIZED); 
+            
+            if(token[0] != '\0') {
+                //dont yield a message because space, enter, tab...
+                printf("Token |%s| UNRECOGNIZED \n", element);
+            }
+
+            break; 
+            
     }
     COUNTFUNC(RETURN_COST);
     return token;
@@ -96,7 +97,7 @@ char* tokenize(int identificator, char* element, int len) {
 
 bool is_delimiter(char c) {
     // The list of possible delimiters
-    //char delimiters[] = {' ', '\t', '\n', '\r', '\0', '+', '*', '=', '>', '(', ')', ';', '{', '}', '[', ']', ','};
+    char delimiters[] = {' ', '\t', '\n', '\r', '\0', '+', '*', '=', '>', '(', ')', ';', '{', '}', '[', ']', ','};
 
     int delimiter_len = sizeof(delimiters) / sizeof(char);
     COUNTFUNC(ARITHMETIC_COST + RETURN_COST);

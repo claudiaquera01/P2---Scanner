@@ -14,10 +14,10 @@ int main(int argc, char** argv) {
 
     int i = 0; 
 
-    while(i < MyValue) {
+    while(MyValue > i) {
 
         if(i > 240) {
-            printf("The current number is: %d", function(i)); 
+            printf("The current number is ()d", function(i)); 
         } 
         else {
             i = i + NumberOfPixels; 
@@ -25,9 +25,9 @@ int main(int argc, char** argv) {
         i += 1; 
     }
 
-    char MyFunnyList[] = "Forgotten information. "; 
+    char MyFunnyList[] = "Forgotten information"; 
 
-    void* my_unrecognized_variable = "This cannot be recognized by the undersoce. "; 
+    void* my_unrecognized_variable = "This cannot be recognized by the undersoce"; 
 
 
 

@@ -18,10 +18,10 @@ int processFile(const char* filename)
 
     // Creating output file
     FILE* output_file = fopen(output_filename, "wb");
-    COUNTFUNC(2*OPEN_FILE_COST+IF_COST+ARITHMETIC_COST);
+    COUNTFUNC(2 * OPEN_FILE_COST + IF_COST + ARITHMETIC_COST);
     if (output_file == NULL){ // Handle error when creating output file
         fprintf(stderr, "Error creating output file: %s\n", output_filename);
-        COUNTFUNC(FPRINTF_COST+RETURN_COST);
+        COUNTFUNC(FPRINTF_COST + RETURN_COST);
         return MAIN_ERROR_FILE_PROCESSING;
     }
 
@@ -33,7 +33,7 @@ int processFile(const char* filename)
     if (writting_buffer == NULL) { // Handle error when allocating the buffer
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
-        COUNTFUNC(FPRINTF_COST+CLOSE_FILE_COST+RETURN_COST);
+        COUNTFUNC(FPRINTF_COST + CLOSE_FILE_COST + RETURN_COST);
         return PREPROCESS_ERROR_MEMORY_ALLOCATION; 
     }
 
@@ -42,7 +42,7 @@ int processFile(const char* filename)
     if (current_token == NULL) { // Handle error when allocating the buffer
         fprintf(stderr, "Error: %s\n", ERROR_MESSAGE_MEMORY_ALLOCATION);
         fclose(input_file); // Close the file before returning
-        COUNTFUNC(FPRINTF_COST+RETURN_COST+CLOSE_FILE_COST);
+        COUNTFUNC(FPRINTF_COST + RETURN_COST + CLOSE_FILE_COST);
         return PREPROCESS_ERROR_MEMORY_ALLOCATION; 
     }
     current_token[0] = '\0'; // to prevent 1 bug, dont remove
@@ -51,7 +51,7 @@ int processFile(const char* filename)
     DFA dfas[NUM_DFA];
     // Import the alphabet of our DFAs
     char alphabet[ALPHABETLEN] = {ALPHABET};
-    COUNTFUNC(3*ARITHMETIC_COST);
+    COUNTFUNC(3 * ARITHMETIC_COST);
 
     {
         //----------------------------------------------TYPE DFA----------------------------------------------
@@ -146,12 +146,13 @@ int processFile(const char* filename)
         // Update dfa transition table with imported one
         fill_transition_table(&dfas[DFA_LITERALS], literal_doc_table);
     }
-    COUNTFUNC(15*ARITHMETIC_COST);
+    COUNTFUNC(15 * ARITHMETIC_COST);
 
     int currentChar = getc(input_file); // Initializing variables to iterate through the file
     int look_ahead = getc(input_file);
     bool is_current_char_delimiter = is_delimiter((char)currentChar);
-    bool is_look_ahead_delimiter = is_delimiter((char)look_ahead);
+    bool is_look_ahead_delimiter = is_delimiter((char)look_ahead); 
+    bool just_added_enter = true; 
     int writ_buff_idx = 0;
     int curr_token_idx = 0; //also serves as length
     // Read the file character by character
@@ -167,7 +168,7 @@ int processFile(const char* filename)
 
         for (int i = 0; i < NUM_DFA; i++)  advance_dfa(&dfas[i], (char)currentChar);
         
-        COUNTFUNC(2*ARITHMETIC_COST+PRINTF_COST);
+        COUNTFUNC(2 * ARITHMETIC_COST + PRINTF_COST);
         if (is_current_char_delimiter || is_look_ahead_delimiter) {
 
             /*
@@ -181,7 +182,7 @@ int processFile(const char* filename)
 
 
             bool success = false;
-            COUNTFUNC(2*ARITHMETIC_COST);
+            COUNTFUNC(2 * ARITHMETIC_COST);
             for (int i = 0; i < NUM_DFA; i++) {
 
                 success = finalize_dfa(&dfas[i]);
@@ -196,7 +197,7 @@ int processFile(const char* filename)
                     free(processed_token); 
                     
                     writ_buff_idx += processed_token_len; 
-                    COUNTFUNC(processed_token_len+MEMORY_COPY_COST+FREE_MEMORY_COST);
+                    COUNTFUNC(processed_token_len + MEMORY_COPY_COST + FREE_MEMORY_COST);
 
                     break;
                 }
@@ -228,6 +229,16 @@ int processFile(const char* filename)
 
             for (int i = 0; i < NUM_DFA; i++) reset_dfa(&dfas[i]);
             COUNTFUNC(IF_COST+ARITHMETIC_COST*2);
+        }
+
+        if(currentChar == '\n' && !just_added_enter) { 
+
+            writting_buffer[writ_buff_idx++] = '\n'; 
+            writting_buffer[writ_buff_idx++] = '\n'; 
+            just_added_enter = true; 
+
+        } else if(!(currentChar != '\t' && currentChar != ' ' && currentChar != '\0')) {
+            just_added_enter = false; 
         }
 
         if (BUFFER_SIZE * BUFFER_THRESHOLD < writ_buff_idx) { 
@@ -382,7 +393,8 @@ How to do it:
 1.  go to ./Code
 2.  Compile using previous command
 3.  execute: cd tests
-4.  execute: ./parser test1.c
+4.  Move parser.exe file to the folder tests
+5.  execute: ./parser test1.c
 
 
 

@@ -96,12 +96,12 @@ int fill_transition_table(DFA* dfa, int* doc_table) {
     for (int i = 0; i < dfa->num_states; i++) {
 		COUNTFUNC(IF_COST + ARITHMETIC_COST);
         for (int j = 0; j < dfa->num_columns; j++) {
-			COUNTFUNC(IF_COST + ARITHMETIC_COST*2);
+			COUNTFUNC(IF_COST + ARITHMETIC_COST * 2);
             set_dfa_transition_table_value(dfa, i, j, doc_table[i * dfa->num_columns + j]);
         }
     }
-	COUNTFUNC(RETURN_COST);
-    return 0;
+	COUNTFUNC(RETURN_COST); 
+    return 0; 
 }
 
 
@@ -128,7 +128,6 @@ void advance_dfa(DFA* dfa, char symbol) {
         dfa->alive = false;
         COUNTFUNC(ARITHMETIC_COST);
     }
-
 
 }
 

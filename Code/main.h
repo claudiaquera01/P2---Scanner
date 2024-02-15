@@ -3,7 +3,6 @@
 
 #include "dfatables.h"
 #include "errors.h"
-#include "scanner.h"
 #include "debug.h"
 #include "datastructures.h"
 

@@ -37,13 +37,16 @@ char* generate_token(const char* element, int len, const char* token_identifier)
     COUNTFUNC(ARITHMETIC_COST * 2 + 2 * IF_COST);
 
     if (mustIgnoreElement(element)) {
-        sprintf(token, " ");
-        COUNTFUNC(FPRINTF_COST);
+        //sprintf(token, " ");
+        //COUNTFUNC(FPRINTF_COST); 
+        token[0] = '\0'; // add nothing
+        COUNTFUNC(ARITHMETIC_COST);
+
 
     } else {
         // Construct the token string
-        sprintf(token, "<%s, %s>", element, token_identifier);
-        COUNTFUNC(FPRINTF_COST);
+        sprintf(token, "<%s, %s> ", element, token_identifier);
+        COUNTFUNC(FPRINTF_COST); 
     }
     COUNTFUNC(RETURN_COST);
     return token;

@@ -185,10 +185,16 @@ int processFile(const char* filename)
             COUNTFUNC(2 * ARITHMETIC_COST);
             for (int i = 0; i < NUM_DFA; i++) {
 
-                success = finalize_dfa(&dfas[i]);
+                success = finalize_dfa(&dfas[i]); 
+                
+                COUNTFUNC(IF_COST);
                 if (success) {
 
                     char* processed_token = tokenize(i, current_token, curr_token_idx); 
+                    if(processed_token == NULL) {
+                        COUNTFUNC(IF_COST);
+                        break; 
+                    }
                     // ^current token index is also length
                     
                     int processed_token_len = strlen(processed_token); 
@@ -201,7 +207,6 @@ int processFile(const char* filename)
 
                     break;
                 }
-                COUNTFUNC(IF_COST);
             }
 
             if (!success) {
@@ -231,6 +236,7 @@ int processFile(const char* filename)
             COUNTFUNC(IF_COST+ARITHMETIC_COST*2);
         }
 
+        //The following ifs 
         if(currentChar == '\n' && !just_added_enter) { 
 
             writting_buffer[writ_buff_idx++] = '\n'; 
@@ -263,9 +269,6 @@ int processFile(const char* filename)
 
     // Do last iteration
 
-    printf("Final iteration! \n"); 
-    COUNTFUNC(PRINTF_COST);
-
     {
         //its weird but it could finalize with a valid token
         bool success = false;
@@ -276,7 +279,10 @@ int processFile(const char* filename)
             if (success) {
 
                 char* processed_token = tokenize(i, current_token, curr_token_idx); 
-                // ^current token index is also length
+                if(processed_token == NULL) {
+                    COUNTFUNC(IF_COST);
+                    break; 
+                }
                 
                 int processed_token_len = strlen(processed_token); 
 

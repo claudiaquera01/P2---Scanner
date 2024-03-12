@@ -458,11 +458,11 @@ int main(int argc, char *argv[])
 
 compilation: 
 
-gcc main.c utils.c datastructures.c debug.c errors.c -o parser
+gcc main.c utils.c datastructures.c debug.c errors.c -o scanner
 
 Execution: 
 
-./parser test1.c
+./scanner test1.c
 
 
 How to do it: 
